@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"github.com/basliqlabs/qwest-services-auth/config"
 	"github.com/basliqlabs/qwest-services-auth/dto"
 	"github.com/basliqlabs/qwest-services-auth/service/authservice"
 	"github.com/basliqlabs/qwest-services-auth/validator/authvalidator"
@@ -8,7 +10,6 @@ import (
 	"net/http"
 )
 
-// TODO: config
 // TODO: repository and migration
 // TODO: rich error
 // TODO: hot reload
@@ -16,6 +17,10 @@ import (
 // TODO: envelope
 
 func main() {
+	cfg := config.Load("config.yml")
+
+	fmt.Printf("%+v\n", cfg)
+
 	e := echo.New()
 	e.POST("/login", func(c echo.Context) error {
 		req := new(dto.LoginRequest)
