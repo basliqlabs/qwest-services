@@ -1,8 +1,9 @@
 package config
 
-type AppConfig struct {
+type HTTPServerConfig struct {
+	Port uint `koanf:"port"`
 }
 
 type Config struct {
-	AppConfig AppConfig `koanf:"app_config"`
+	HttpServer HTTPServerConfig `koanf:"http_server"`
 }
