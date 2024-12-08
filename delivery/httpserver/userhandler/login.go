@@ -8,7 +8,6 @@ import (
 	"net/http"
 )
 
-// TODO: const OP for richError
 func (h Handler) userLogin(c echo.Context) error {
 	req := new(dto.LoginRequest)
 	if err := c.Bind(req); err != nil {
