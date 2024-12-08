@@ -32,7 +32,13 @@ func Load(configPath string) Config {
 	}
 
 	// highest precedence -> overwrite variables with what's inside .env file
-	err = k.Load(confmap.Provider(map[string]any{}, "."), nil)
+	err = k.Load(confmap.Provider(map[string]any{
+		"repository.postgres.username": dotenv.Get("POSTGRES_USER"),
+		"repository.postgres.password": dotenv.Get("POSTGRES_PASSWORD"),
+		"repository.postgres.host":     dotenv.Get("POSTGRES_HOST"),
+		"repository.postgres.port":     dotenv.Get("POSTGRES_PORT"),
+		"repository.postgres.dbname":   dotenv.Get("POSTGRES_DB"),
+	}, "."), nil)
 
 	// deserialize all the loaded data into the config variable
 	err = k.Unmarshal("", &cfg)

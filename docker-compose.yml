@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  qwest_pg:
+    image: postgres:16.4
+    container_name: qwest_pg
+    ports:
+      - "${APP_POSTGRES_PORT}:5432"
+    volumes:
+      - qwest_pg_data:/var/lib/postgresql/data/
+    restart: always
+    environment:
+      - POSTGRES_USER=${APP_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${APP_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${APP_POSTGRES_DB}
+
+volumes:
+  qwest_pg_data:

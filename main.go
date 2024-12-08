@@ -6,11 +6,10 @@ import (
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver"
 )
 
-// TODO: repository and migration
-// TODO: rich error
 // TODO: hot reload
 // TODO: logging
 // TODO: envelope
+// TODO: validation (ozzo package)
 
 func main() {
 	cfg := config.Load("config.yml")

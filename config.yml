@@ -1,2 +1,10 @@
 http_server:
-    port: 15340
+  port: 15340
+
+repository:
+  postgres:
+    username:
+    password:
+    host:
+    port:
+    dbname:
