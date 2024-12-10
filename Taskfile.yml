@@ -4,3 +4,10 @@ tasks:
   dev:
     cmds:
       - air
+  test:
+    cmds:
+      - go test -v {{.CLI_ARGS}}
+  test:cover:
+    cmds:
+      - go test -v -coverprofile=prof.out {{.CLI_ARGS}}
+      - go tool cover -html=prof.out
