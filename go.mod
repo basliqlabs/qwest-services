@@ -3,6 +3,7 @@ module github.com/basliqlabs/qwest-services-auth
 go 1.21.2
 
 require (
+	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/knadh/koanf/parsers/yaml v0.1.0
 	github.com/knadh/koanf/providers/confmap v0.1.0
