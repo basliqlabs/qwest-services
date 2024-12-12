@@ -32,3 +32,17 @@ To run tests with coverage profile, run the following:
 ```sh
 task test:cover -- <TEST_PATH>
 ```
+
+## Development Setup
+
+After cloning the repository, install the git hooks:
+
+```sh 
+task setup-hooks
+```
+
+This will set up pre-commit hooks that:
+- Format all Go files
+- Run go vet for potential errors
+- Run all tests with race condition checking
+- Prevent committing unwanted files (.exe, .test, .out, .log, .env)
