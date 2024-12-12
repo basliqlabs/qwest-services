@@ -6,6 +6,7 @@ import (
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver"
 )
 
+// TODO: pre-commit (husky)
 // TODO: auth
 // TODO: language
 // TODO: logging

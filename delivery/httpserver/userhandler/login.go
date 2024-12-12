@@ -3,7 +3,6 @@ package userhandler
 import (
 	"github.com/basliqlabs/qwest-services-auth/dto"
 	"github.com/basliqlabs/qwest-services-auth/service/authservice"
-	"github.com/basliqlabs/qwest-services-auth/validator/authvalidator"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )
@@ -15,7 +14,9 @@ func (h Handler) userLogin(c echo.Context) error {
 		return c.String(http.StatusBadRequest, "bad request")
 	}
 
-	validationErrors, err := authvalidator.Login(req)
+	// TODO: temporarily using nil as context
+	validationErrors, err := h.validator.Login(nil, req)
+
 	if err != nil {
 		// TODO: implement field errors
 		return c.JSON(http.StatusUnprocessableEntity, validationErrors)
