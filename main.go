@@ -8,7 +8,6 @@ import (
 
 // TODO: pre-commit (husky)
 // TODO: auth
-// TODO: language
 // TODO: logging
 // TODO: envelope
 
