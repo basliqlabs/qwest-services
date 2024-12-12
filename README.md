@@ -2,11 +2,14 @@
 
 ## Run this project
 
-This will install `Task` task runner.
+We are using `Task` as our task runner, to install `Task` run the command below:
 
 ```sh
 npm install -g @go-task/cli
 ```
+
+> If you don't have `npm` installed on your machine, please
+> follow [Task installation guides](https://taskfile.dev/installation/).
 
 With `Task` installed, you can run the command below:
 
@@ -14,7 +17,22 @@ With `Task` installed, you can run the command below:
 task dev
 ```
 
-## Executing tests
+## Setup development environment
+
+After cloning the repository, install the git hooks:
+
+```sh 
+task setup-hooks
+```
+
+This will set up pre-commit hooks that:
+
+- Format all Go files
+- Run go vet for potential errors
+- Run all tests in the changed directories
+- Prevent committing unwanted files (.exe, .test, .out, .log, .env)
+
+## Execute tests
 
 You can run all tests using the command below:
 
@@ -33,16 +51,3 @@ To run tests with coverage profile, run the following:
 task test:cover -- <TEST_PATH>
 ```
 
-## Development Setup
-
-After cloning the repository, install the git hooks:
-
-```sh 
-task setup-hooks
-```
-
-This will set up pre-commit hooks that:
-- Format all Go files
-- Run go vet for potential errors
-- Run all tests with race condition checking
-- Prevent committing unwanted files (.exe, .test, .out, .log, .env)
