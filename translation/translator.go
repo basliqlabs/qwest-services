@@ -35,6 +35,8 @@ func (t *Translator) loadTranslations() {
 		panic(fmt.Sprintf("failed to read translation directory: %v", err))
 	}
 
+	fileKeys := make(map[string]map[string]bool)
+
 	for _, dir := range dirs {
 		if !dir.IsDir() {
 			continue
@@ -63,25 +65,57 @@ func (t *Translator) loadTranslations() {
 				panic(fmt.Sprintf("failed to parse translation file %s/%s: %v", lang, file.Name(), err))
 			}
 
+			if _, exists := fileKeys[file.Name()]; !exists {
+				fileKeys[file.Name()] = make(map[string]bool)
+			}
+
 			for key, value := range fileTranslations {
 				t.translations[lang][key] = value
+				fileKeys[file.Name()][key] = true
 			}
 		}
 	}
 
-	return
-}
+	for _, dir := range dirs {
+		if !dir.IsDir() {
+			continue
+		}
 
-func (t *Translator) T(lang, key string, data map[string]interface{}) string {
-	if msg, ok := t.getMessage(lang, key); ok {
-		return t.renderTemplate(msg, data)
+		lang := dir.Name()
+		files, _ := os.ReadDir(filepath.Join("translation", lang))
+
+		for _, file := range files {
+			if filepath.Ext(file.Name()) != ".json" {
+				continue
+			}
+
+			content, _ := os.ReadFile(filepath.Join("translation", lang, file.Name()))
+			var fileTranslations map[string]string
+			json.Unmarshal(content, &fileTranslations)
+
+			expectedKeys := fileKeys[file.Name()]
+
+			for key := range expectedKeys {
+				if _, exists := fileTranslations[key]; !exists {
+					panic(Error{
+						Lang:    lang,
+						File:    file.Name(),
+						Message: fmt.Sprintf("missing key %q that exists in other languages", key),
+					})
+				}
+			}
+
+			for key := range fileTranslations {
+				if !expectedKeys[key] {
+					panic(Error{
+						Lang:    lang,
+						File:    file.Name(),
+						Message: fmt.Sprintf("extra key %q that doesn't exist in other languages", key),
+					})
+				}
+			}
+		}
 	}
-
-	if msg, ok := t.getMessage(t.defaultLang, key); ok {
-		return t.renderTemplate(msg, data)
-	}
-
-	return key
 }
 
 func (t *Translator) getMessage(lang, key string) (string, bool) {
@@ -94,7 +128,7 @@ func (t *Translator) getMessage(lang, key string) (string, bool) {
 	return "", false
 }
 
-func (t *Translator) renderTemplate(tmpl string, data map[string]interface{}) string {
+func (t *Translator) renderTemplate(tmpl string, data map[string]any) string {
 	if data == nil {
 		return tmpl
 	}
@@ -110,4 +144,16 @@ func (t *Translator) renderTemplate(tmpl string, data map[string]interface{}) st
 	}
 
 	return buf.String()
+}
+
+func (t *Translator) T(lang, key string, data map[string]any) string {
+	if msg, ok := t.getMessage(lang, key); ok {
+		return t.renderTemplate(msg, data)
+	}
+
+	if msg, ok := t.getMessage(t.defaultLang, key); ok {
+		return t.renderTemplate(msg, data)
+	}
+
+	return key
 }
