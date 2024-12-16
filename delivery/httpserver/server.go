@@ -3,19 +3,31 @@ package httpserver
 import (
 	"fmt"
 	"github.com/basliqlabs/qwest-services-auth/config"
+	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/userhandler"
+	"github.com/basliqlabs/qwest-services-auth/translation"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 type Server struct {
-	cfg    config.Config
-	Router *echo.Echo
+	cfg         config.Config
+	Router      *echo.Echo
+	translate   *translation.Translator
+	userHandler userhandler.Handler
 }
 
-func New(cfg config.Config) *Server {
+type Args struct {
+	Config      config.Config
+	Translate   *translation.Translator
+	UserHandler userhandler.Handler
+}
+
+func New(args Args) *Server {
 	return &Server{
-		cfg:    cfg,
-		Router: echo.New(),
+		cfg:         args.Config,
+		Router:      echo.New(),
+		translate:   args.Translate,
+		userHandler: args.UserHandler,
 	}
 }
 
@@ -25,6 +37,9 @@ func (s *Server) Start() {
 
 	// * Healthcheck route
 	s.Router.GET("/healthcheck", s.healthCheck)
+
+	// * Users
+	s.userHandler.SetUserRoutes(s.Router)
 
 	// start the server
 	addr := fmt.Sprintf(":%d", s.cfg.HttpServer.Port)
