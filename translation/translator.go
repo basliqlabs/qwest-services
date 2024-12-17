@@ -11,17 +11,20 @@ import (
 
 type Config struct {
 	Default string `koanf:"default"`
+	Core    string `koanf:"core"`
 }
 
 type Translator struct {
 	translations map[string]map[string]string // lang -> key -> message
 	defaultLang  string
+	coreLang     string
 }
 
 func New(cfg Config) *Translator {
 	t := &Translator{
 		translations: make(map[string]map[string]string),
 		defaultLang:  cfg.Default,
+		coreLang:     cfg.Core,
 	}
 
 	t.loadTranslations()
@@ -156,4 +159,12 @@ func (t *Translator) T(lang, key string, data map[string]any) string {
 	}
 
 	return key
+}
+
+func (t *Translator) GetDefaultLang() string {
+	return t.defaultLang
+}
+
+func (t *Translator) GetCoreLang() string {
+	return t.coreLang
 }

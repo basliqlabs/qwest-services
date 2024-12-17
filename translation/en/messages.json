@@ -1,3 +1,5 @@
 {
-  "welcome": "You are very welcome."
+  "welcome": "You are very welcome.",
+  "bad_request": "Bad request.",
+  "invalid_input": "Invalid input."
 }

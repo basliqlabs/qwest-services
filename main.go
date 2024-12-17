@@ -22,9 +22,11 @@ func main() {
 	fmt.Printf("%+v\n", cfg)
 
 	translate := translation.New(cfg.Language)
-	vldtr := validator.New(*translate)
-	userValidator := authvalidator.New(*vldtr)
+	mainValidator := validator.New(translate)
+
+	userValidator := authvalidator.New(mainValidator)
 	userHandler := userhandler.New(userValidator)
+
 	server := httpserver.New(httpserver.Args{
 		UserHandler: *userHandler,
 		Translate:   translate,

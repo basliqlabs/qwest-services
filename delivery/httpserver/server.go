@@ -2,11 +2,13 @@ package httpserver
 
 import (
 	"fmt"
+
 	"github.com/basliqlabs/qwest-services-auth/config"
+	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/middleware"
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/userhandler"
 	"github.com/basliqlabs/qwest-services-auth/translation"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	echomiddleware "github.com/labstack/echo/v4/middleware"
 )
 
 type Server struct {
@@ -32,8 +34,9 @@ func New(args Args) *Server {
 }
 
 func (s *Server) Start() {
-	s.Router.Use(middleware.Logger())
-	s.Router.Use(middleware.Recover())
+	s.Router.Use(echomiddleware.Logger())
+	s.Router.Use(echomiddleware.Recover())
+	s.Router.Use(middleware.TranslatorMiddleware(s.translate))
 
 	// * Healthcheck route
 	s.Router.GET("/healthcheck", s.healthCheck)
