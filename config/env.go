@@ -43,10 +43,11 @@ func (e *EnvironmentVariables) Load() {
 }
 
 func (e *EnvironmentVariables) Get(key string) string {
-	value, ok := e.envMap[fmt.Sprintf("%s%s", e.prefix, key)]
+	envKey := fmt.Sprintf("%s%s", e.prefix, key)
+	value, ok := e.envMap[envKey]
 
 	if !ok {
-		panic(fmt.Sprintf(`failed to get the value of "%v"`, key))
+		panic(fmt.Sprintf(`failed to get the value of "%v"`, envKey))
 	}
 
 	return value

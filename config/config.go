@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
 	"github.com/basliqlabs/qwest-services-auth/repository/postgresql"
 	"github.com/basliqlabs/qwest-services-auth/translation"
 )
@@ -14,7 +15,9 @@ type RepositoryConfig struct {
 }
 
 type Config struct {
+	Env        string             `koanf:"env"`
 	HttpServer HTTPServerConfig   `koanf:"http_server"`
 	Repository RepositoryConfig   `koanf:"repository"`
 	Language   translation.Config `koanf:"language"`
+	Logger     logger.Config      `koanf:"logger"`
 }

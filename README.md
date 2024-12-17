@@ -11,7 +11,13 @@ npm install -g @go-task/cli
 > If you don't have `npm` installed on your machine, please
 > follow [Task installation guides](https://taskfile.dev/installation/).
 
-With `Task` installed, you can run the command below:
+> This project uses [Air live reload](https://github.com/air-verse/air), so please run the following command to install it:
+
+```sh
+go install github.com/air-verse/air@latest
+```
+
+With `Task` and `Air` installed, you can run the command below to jump start the project:
 
 ```sh
 task dev
@@ -51,3 +57,11 @@ To run tests with coverage profile, run the following:
 task test:cover -- <TEST_PATH>
 ```
 
+--- 
+## Roadmap
+
+- [ ] Add logger
+- [ ] Add swagger
+- [ ] Create Docker image
+- [ ] Add Auth service
+- [ ] Envelope panic recovered errors

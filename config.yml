@@ -12,3 +12,12 @@ repository:
 language:
   default: en
   core: en
+
+logger:
+  level: debug
+  encoding: json
+  output_path: logs/app.log
+  max_size: 100
+  max_backups: 3
+  max_age: 28
+  compress: true

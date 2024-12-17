@@ -38,6 +38,7 @@ func Load(configPath string) Config {
 		"repository.postgres.host":     dotenv.Get("POSTGRES_HOST"),
 		"repository.postgres.port":     dotenv.Get("POSTGRES_PORT"),
 		"repository.postgres.dbname":   dotenv.Get("POSTGRES_DB"),
+		"env":                          dotenv.Get("ENV"),
 	}, "."), nil)
 
 	// deserialize all the loaded data into the config variable

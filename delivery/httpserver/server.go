@@ -34,7 +34,7 @@ func New(args Args) *Server {
 }
 
 func (s *Server) Start() {
-	s.Router.Use(echomiddleware.Logger())
+	s.Router.Use(middleware.Logger())
 	s.Router.Use(echomiddleware.Recover())
 	s.Router.Use(middleware.TranslatorMiddleware(s.translate))
 

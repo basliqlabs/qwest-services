@@ -1,4 +1,6 @@
 .idea
+.DS_Store
+
 .env
 
 *.out 
@@ -7,3 +9,6 @@
 tmp
 
 scripts/git-hooks
+
+logs/
+*.log

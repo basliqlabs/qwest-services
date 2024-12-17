@@ -2,6 +2,7 @@ package validator
 
 import (
 	"errors"
+
 	"github.com/basliqlabs/qwest-services-auth/pkg/richerror"
 	"github.com/basliqlabs/qwest-services-auth/translation"
 	validation "github.com/go-ozzo/ozzo-validation/v4"

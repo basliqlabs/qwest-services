@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/userhandler"
 	"github.com/basliqlabs/qwest-services-auth/translation"
 	"github.com/basliqlabs/qwest-services-auth/validator"
@@ -9,17 +8,13 @@ import (
 
 	"github.com/basliqlabs/qwest-services-auth/config"
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver"
+	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
 )
-
-// TODO: context
-// TODO: query params
-// TODO: logging
-// TODO: auth
 
 func main() {
 	cfg := config.Load("config.yml")
 
-	fmt.Printf("%+v\n", cfg)
+	logger.Init(cfg.Logger, cfg.Env)
 
 	translate := translation.New(cfg.Language)
 	mainValidator := validator.New(translate)
