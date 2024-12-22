@@ -22,12 +22,13 @@ func Logger() echo.MiddlewareFunc {
 		LogError:         true,
 		LogProtocol:      true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			// TODO: add config to check if logging is enabled
 			errMsg := ""
 			if v.Error != nil {
 				errMsg = v.Error.Error()
 			}
 
-			logger.L().Named("http-server").Info("request",
+			fields := []zap.Field{
 				zap.String("request_id", v.RequestID),
 				zap.String("host", v.Host),
 				zap.String("content-length", v.ContentLength),
@@ -39,7 +40,13 @@ func Logger() echo.MiddlewareFunc {
 				zap.Int64("response_size", v.ResponseSize),
 				zap.String("uri", v.URI),
 				zap.Int("status", v.Status),
-			)
+			}
+
+			if v.Status >= 500 {
+				logger.L().Named("http-server").Error("request", fields...)
+			} else {
+				logger.L().Named("http-server").Info("request", fields...)
+			}
 
 			return nil
 		},

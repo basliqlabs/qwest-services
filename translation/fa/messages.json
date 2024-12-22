@@ -1,5 +1,6 @@
 {
   "welcome": "خوش آمدید.",
   "bad_request": "درخواست نامعتبر.",
-  "invalid_input": "ورودی نامعتبر."
+  "invalid_input": "ورودی نامعتبر.",
+  "internal_server": "خطای داخلی سرور."
 }

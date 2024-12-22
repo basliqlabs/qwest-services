@@ -8,7 +8,6 @@ import (
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/userhandler"
 	"github.com/basliqlabs/qwest-services-auth/translation"
 	"github.com/labstack/echo/v4"
-	echomiddleware "github.com/labstack/echo/v4/middleware"
 )
 
 type Server struct {
@@ -34,9 +33,9 @@ func New(args Args) *Server {
 }
 
 func (s *Server) Start() {
-	s.Router.Use(middleware.Logger())
-	s.Router.Use(echomiddleware.Recover())
 	s.Router.Use(middleware.TranslatorMiddleware(s.translate))
+	s.Router.Use(middleware.Logger())
+	s.Router.Use(middleware.Recovery(s.translate))
 
 	// * Healthcheck route
 	s.Router.GET("/healthcheck", s.healthCheck)

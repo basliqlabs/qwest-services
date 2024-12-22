@@ -60,8 +60,8 @@ task test:cover -- <TEST_PATH>
 --- 
 ## Roadmap
 
-- [ ] Add logger
+- [x] Add logger
+- [x] Create Docker image
+- [x] Envelope panic recovered errors
 - [ ] Add swagger
-- [ ] Create Docker image
 - [ ] Add Auth service
-- [ ] Envelope panic recovered errors
