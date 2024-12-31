@@ -122,5 +122,21 @@ func main() {
 	}
 	fmt.Printf("%s✓ no unwanted files found%s\n", colorGreen, colorNC)
 
+	// Check 5: Generate and validate API documentation
+	fmt.Println("Generating API documentation...")
+	_, err = runCommand("task", "docs:generate")
+	if err != nil {
+		fmt.Printf("%s❌ API documentation generation failed: %v%s\n", colorRed, err, colorNC)
+		os.Exit(1)
+	}
+
+	fmt.Println("Validating API documentation...")
+	_, err = runCommand("task", "docs:validate")
+	if err != nil {
+		fmt.Printf("%s❌ API documentation validation failed: %v%s\n", colorRed, err, colorNC)
+		os.Exit(1)
+	}
+	fmt.Printf("%s✓ API documentation is valid%s\n", colorGreen, colorNC)
+
 	fmt.Printf("%sAll pre-commit checks passed!%s\n", colorGreen, colorNC)
 }

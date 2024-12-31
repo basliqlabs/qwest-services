@@ -1,0 +1,189 @@
+basePath: /
+definitions:
+  dto.LoginRequest:
+    properties:
+      password:
+        description: |-
+          User's password
+          @minLength 8
+        example: '********'
+        type: string
+      username:
+        description: |-
+          Username must start with a letter and be 6-31 characters long
+          @pattern ^[a-zA-Z]{1}[a-zA-Z0-9]{5,30}$
+        example: johndoe
+        type: string
+    type: object
+  dto.LoginResponse:
+    properties:
+      token:
+        description: |-
+          JWT token for authentication
+          @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        type: string
+    type: object
+  envelope.ErrorCode:
+    enum:
+    - UNAUTHORIZED
+    - FORBIDDEN
+    - INVALID_TOKEN
+    - TOKEN_EXPIRED
+    - VALIDATION_ERROR
+    - INVALID_INPUT
+    - MALFORMED_JSON
+    - NOT_FOUND
+    - ALREADY_EXISTS
+    - CONFLICT
+    - BAD_REQUEST
+    - DATABASE_ERROR
+    - CONNECTION_ERROR
+    - INTERNAL_ERROR
+    - SERVICE_DOWN
+    - TIMEOUT
+    - INVALID_OPERATION
+    - LIMIT_EXCEEDED
+    type: string
+    x-enum-varnames:
+    - ErrUnauthorized
+    - ErrForbidden
+    - ErrInvalidToken
+    - ErrTokenExpired
+    - ErrValidation
+    - ErrInvalidInput
+    - ErrMalformedJSON
+    - ErrNotFound
+    - ErrAlreadyExists
+    - ErrConflict
+    - ErrBadRequest
+    - ErrDatabase
+    - ErrConnection
+    - ErrInternal
+    - ErrServiceDown
+    - ErrTimeout
+    - ErrInvalidOperation
+    - ErrLimitExceeded
+  envelope.Meta:
+    additionalProperties: {}
+    type: object
+  envelope.Pagination:
+    properties:
+      page:
+        type: integer
+      per_page:
+        type: integer
+      total:
+        type: integer
+      total_pages:
+        type: integer
+    type: object
+  envelope.Response:
+    properties:
+      data:
+        description: Contains the response data
+      error:
+        allOf:
+        - $ref: '#/definitions/envelope.ResponseError'
+        description: Contains error details if Success is false
+      meta:
+        allOf:
+        - $ref: '#/definitions/envelope.Meta'
+        description: Additional metadata about the response
+      pagination:
+        allOf:
+        - $ref: '#/definitions/envelope.Pagination'
+        description: Pagination information if applicable
+      success:
+        description: Indicates if the request was successful
+        example: true
+        type: boolean
+    type: object
+  envelope.ResponseError:
+    properties:
+      code:
+        allOf:
+        - $ref: '#/definitions/envelope.ErrorCode'
+        description: |-
+          Error code identifier
+          @example INVALID_INPUT
+      fields:
+        additionalProperties:
+          type: string
+        description: Field-specific validation errors
+        type: object
+      message:
+        description: |-
+          Human-readable error message
+          @example Invalid input provided
+        type: string
+    type: object
+host: localhost:15340
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: Authentication service for Qwest platform
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Qwest Authentication API
+  version: "1.0"
+paths:
+  /healthcheck:
+    get:
+      description: Check if the API is running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Health check
+      tags:
+      - system
+  /users/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate a user with username and password
+      parameters:
+      - description: Login credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/envelope.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.LoginResponse'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/envelope.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/envelope.Response'
+      summary: User login
+      tags:
+      - auth
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
