@@ -9,31 +9,10 @@ import (
 	"text/template"
 )
 
-type Config struct {
-	Default string `koanf:"default"`
-	Core    string `koanf:"core"`
-}
-
-type Translator struct {
-	translations map[string]map[string]string // lang -> key -> message
-	defaultLang  string
-	coreLang     string
-}
-
-func New(cfg Config) *Translator {
-	t := &Translator{
-		translations: make(map[string]map[string]string),
-		defaultLang:  cfg.Default,
-		coreLang:     cfg.Core,
-	}
-
-	t.loadTranslations()
-
-	return t
-}
+const translationDirectory = "pkg/translation"
 
 func (t *Translator) loadTranslations() {
-	dirs, err := os.ReadDir("translation")
+	dirs, err := os.ReadDir(translationDirectory)
 	if err != nil {
 		panic(fmt.Sprintf("failed to read translation directory: %v", err))
 	}
@@ -48,7 +27,7 @@ func (t *Translator) loadTranslations() {
 		lang := dir.Name()
 		t.translations[lang] = make(map[string]string)
 
-		files, err := os.ReadDir(filepath.Join("translation", lang))
+		files, err := os.ReadDir(filepath.Join(translationDirectory, lang))
 		if err != nil {
 			panic(fmt.Sprintf("failed to read language directory %s: %v", lang, err))
 		}
@@ -58,7 +37,7 @@ func (t *Translator) loadTranslations() {
 				continue
 			}
 
-			content, err := os.ReadFile(filepath.Join("translation", lang, file.Name()))
+			content, err := os.ReadFile(filepath.Join(translationDirectory, lang, file.Name()))
 			if err != nil {
 				panic(fmt.Sprintf("failed to read translation file %s/%s: %v", lang, file.Name(), err))
 			}
@@ -85,14 +64,14 @@ func (t *Translator) loadTranslations() {
 		}
 
 		lang := dir.Name()
-		files, _ := os.ReadDir(filepath.Join("translation", lang))
+		files, _ := os.ReadDir(filepath.Join(translationDirectory, lang))
 
 		for _, file := range files {
 			if filepath.Ext(file.Name()) != ".json" {
 				continue
 			}
 
-			content, _ := os.ReadFile(filepath.Join("translation", lang, file.Name()))
+			content, _ := os.ReadFile(filepath.Join(translationDirectory, lang, file.Name()))
 			var fileTranslations map[string]string
 			json.Unmarshal(content, &fileTranslations)
 

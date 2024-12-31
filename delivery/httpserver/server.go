@@ -6,20 +6,17 @@ import (
 	"github.com/basliqlabs/qwest-services-auth/config"
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/middleware"
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/userhandler"
-	"github.com/basliqlabs/qwest-services-auth/translation"
 	"github.com/labstack/echo/v4"
 )
 
 type Server struct {
 	cfg         config.Config
 	Router      *echo.Echo
-	translate   *translation.Translator
 	userHandler userhandler.Handler
 }
 
 type Args struct {
 	Config      config.Config
-	Translate   *translation.Translator
 	UserHandler userhandler.Handler
 }
 
@@ -27,15 +24,14 @@ func New(args Args) *Server {
 	return &Server{
 		cfg:         args.Config,
 		Router:      echo.New(),
-		translate:   args.Translate,
 		userHandler: args.UserHandler,
 	}
 }
 
 func (s *Server) Start() {
-	s.Router.Use(middleware.TranslatorMiddleware(s.translate))
+	s.Router.Use(middleware.TranslatorMiddleware())
 	s.Router.Use(middleware.Logger())
-	s.Router.Use(middleware.Recovery(s.translate))
+	s.Router.Use(middleware.Recovery())
 
 	// * Healthcheck route
 	s.Router.GET("/healthcheck", s.healthCheck)

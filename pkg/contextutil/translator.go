@@ -2,20 +2,8 @@ package contextutil
 
 import (
 	"context"
-	"github.com/basliqlabs/qwest-services-auth/translation"
+	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
 )
-
-func WithTranslator(ctx context.Context, t *translation.Translator) context.Context {
-	return context.WithValue(ctx, translatorKey, t)
-}
-
-func GetTranslation(ctx context.Context, key string, data map[string]any) string {
-	if t, ok := ctx.Value(translatorKey).(*translation.Translator); ok {
-		return t.T(GetLanguage(ctx), key, data)
-	}
-
-	return key
-}
 
 func WithLanguage(ctx context.Context, lang string) context.Context {
 	if lang == "" {

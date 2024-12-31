@@ -1,8 +1,12 @@
 package authservice
 
-import "github.com/basliqlabs/qwest-services-auth/dto"
+import (
+	"context"
 
-func (s *Service) Login(req *dto.LoginRequest) (*dto.LoginResponse, error) {
+	"github.com/basliqlabs/qwest-services-auth/dto"
+)
+
+func (s *Service) Login(ctx context.Context, req *dto.LoginRequest) (*dto.LoginResponse, error) {
 	// TODO: implement service
 	return nil, nil
 }

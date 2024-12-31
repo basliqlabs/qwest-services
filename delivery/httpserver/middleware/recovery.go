@@ -5,22 +5,17 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/basliqlabs/qwest-services-auth/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services-auth/pkg/envelope"
 	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
-	"github.com/basliqlabs/qwest-services-auth/translation"
+	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )
 
-func Recovery(t *translation.Translator) echo.MiddlewareFunc {
+func Recovery() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			// TODO: this is a temporary solution to pass the translator to the recovery middleware
-			ctx := contextutil.WithTranslator(c.Request().Context(), t)
 			lang := c.Request().Header.Get("Accept-Language")
-			ctx = contextutil.WithLanguage(ctx, lang)
-			c.SetRequest(c.Request().WithContext(ctx))
 
 			defer func() {
 				if r := recover(); r != nil {
@@ -44,7 +39,7 @@ func Recovery(t *translation.Translator) echo.MiddlewareFunc {
 
 					c.JSON(http.StatusInternalServerError, envelope.New(false).WithError(&envelope.ResponseError{
 						Code:    envelope.ErrInternal,
-						Message: contextutil.GetTranslation(ctx, "internal_server", nil),
+						Message: translation.T(lang, "internal_server", nil),
 					}))
 				}
 			}()

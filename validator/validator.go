@@ -4,7 +4,7 @@ import (
 	"errors"
 
 	"github.com/basliqlabs/qwest-services-auth/pkg/richerror"
-	"github.com/basliqlabs/qwest-services-auth/translation"
+	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
@@ -27,17 +27,13 @@ func generateFieldErrors(err error) ValidationErrors {
 }
 
 type Validator struct {
-	Translate *translation.Translator
 }
 
-func New(t *translation.Translator) *Validator {
-	return &Validator{
-		Translate: t,
-	}
+func New() *Validator {
+	return &Validator{}
 }
 
 type Args struct {
-	Language  string
 	Operation string
 	Request   any
 	Error     error
@@ -46,7 +42,7 @@ type Args struct {
 func (v *Validator) Generate(args Args) (ValidationErrors, error) {
 	return generateFieldErrors(args.Error), richerror.
 		New(args.Operation).
-		WithMessage(v.Translate.T(args.Language, "invalid_input", nil)).
+		WithMessage(translation.T(translation.GetCoreLang(), "invalid_input", nil)).
 		WithKind(richerror.KindInvalid).
 		WithMeta(map[string]interface{}{"req": args.Request}).
 		WithError(args.Error)
