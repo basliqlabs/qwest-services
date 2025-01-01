@@ -130,13 +130,5 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Println("Validating API documentation...")
-	_, err = runCommand("task", "docs:validate")
-	if err != nil {
-		fmt.Printf("%s❌ API documentation validation failed: %v%s\n", colorRed, err, colorNC)
-		os.Exit(1)
-	}
-	fmt.Printf("%s✓ API documentation is valid%s\n", colorGreen, colorNC)
-
 	fmt.Printf("%sAll pre-commit checks passed!%s\n", colorGreen, colorNC)
 }

@@ -20,7 +20,7 @@ func main() {
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
-		fmt.Println("Failed to generate API documentation")
+		fmt.Println("Failed to generate API documentation", err)
 		os.Exit(1)
 	}
 
@@ -38,7 +38,7 @@ func main() {
 	cmd.Stderr = os.Stderr
 
 	if err := cmd.Run(); err != nil {
-		fmt.Println("Failed to convert API documentation")
+		fmt.Println("Failed to convert API documentation", err)
 		os.Exit(1)
 	}
 }

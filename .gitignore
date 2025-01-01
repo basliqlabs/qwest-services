@@ -1,16 +1,23 @@
+# editors
 .idea
 .DS_Store
+.code
 
+# secrets
 .env
 
-*.out 
-*.log
-
-tmp
-
-scripts/git-hooks
-
+# logs
 logs/
 *.log
 
+# temp and cache folders
+tmp
+.task
+
+# build files
+scripts/git-hooks
+*.out
 *.exe
+docs/api
+
+

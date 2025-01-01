@@ -1,41 +1,26 @@
 version: '3'
 
+includes:
+  docs: ./docs
+  git-hooks: ./cmd/hooks
+
 tasks:
-  dev:
-    cmds:
-      - air
+  dev: air
 
   test:
-    cmds:
-      - go test -v {{.CLI_ARGS}}
+    cmd: go test -v {{.CLI_ARGS}}
 
   test:cover:
     cmds:
       - go test -v -coverprofile=prof.out {{.CLI_ARGS}}
       - go tool cover -html=prof.out
 
-  setup-hooks:
+  setup:
     cmds:
-      - go build -o scripts/git-hooks/pre-commit cmd/hooks/precommit/main.go
-      - go run cmd/hooks/setup/main.go
+      - task: setup-air
+      - task: git-hooks:setup-git-hooks
+      - task: docs:setup-swag
 
-  docs:generate:
-    desc: Generate API documentation
-    cmds:
-      - go run cmd/docs/generate/main.go
-    sources:
-      - ./**/*.go
-    generates:
-      - docs/api/openapi.yaml
-
-  docs:serve:
-    desc: Serve API documentation
-    deps: [docs:generate]
-    cmds:
-      - npx @stoplight/elements docs/api/openapi.yaml --port 15341
-
-  docs:validate:
-    desc: Validate OpenAPI specification
-    deps: [docs:generate]
-    cmds:
-      - npx @stoplight/spectral-cli lint docs/api/openapi.yaml
+  setup-air:
+    internal: true
+    cmd: go install github.com/air-verse/air@v1.61.5

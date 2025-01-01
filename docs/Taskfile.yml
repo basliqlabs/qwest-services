@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  generate:
+    desc: Generate API documentation
+    cmds:
+      - go run cmd/docs/generate/main.go
+    sources:
+      - ./**/*.go
+    generates:
+      - docs/api/openapi.yaml
+
+  serve:
+    desc: Serve API documentation
+    deps: [generate]
+    cmds:
+      - npx @stoplight/elements docs/api/openapi.yaml --port 15341
+
+  setup-swag:
+    internal: true
+    cmd: go install github.com/swaggo/swag/cmd/swag@v1.16.4

@@ -1,37 +1,24 @@
 # Qwest Services
 
-## Run this project
+## Setup development environment
 
 We are using `Task` as our task runner, to install `Task` run the command below:
 
 ```sh
-npm install -g @go-task/cli
+go install github.com/go-task/task/v3/cmd/task@v3.40.1
 ```
-
-> If you don't have `npm` installed on your machine, please
-> follow [Task installation guides](https://taskfile.dev/installation/).
-
-> This project uses [Air live reload](https://github.com/air-verse/air), so please run the following command to install it:
+After installing `Task`, you can set up the project with:
 
 ```sh
-go install github.com/air-verse/air@latest
+# installs Air and Swag CLI and also sets up Git hooks
+task setup
 ```
 
-With `Task` and `Air` installed, you can run the command below to jump start the project:
+### Air
+The `setup` command will install `Air` hot reload. You can read more about it at its [GitHub](https://github.com/air-verse/air).
 
-```sh
-task dev
-```
-
-## Setup development environment
-
-After cloning the repository, install the git hooks:
-
-```sh 
-task setup-hooks
-```
-
-This will set up pre-commit hooks that:
+### Git hooks
+The `setup` command will set up pre-commit git hooks that:
 
 - Format all Go files
 - Run go vet for potential errors
