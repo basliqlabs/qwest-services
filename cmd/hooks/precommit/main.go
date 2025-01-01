@@ -122,7 +122,16 @@ func main() {
 	}
 	fmt.Printf("%s✓ no unwanted files found%s\n", colorGreen, colorNC)
 
-	// Check 5: Generate and validate API documentation
+	// Check 5: Swag fmt
+	fmt.Println("Running swag fmt...")
+	_, err = runCommand("task", "docs:swag-fmt")
+	if err != nil {
+		fmt.Printf("%s❌ Swag fmt failed: %v%s\n", colorRed, err, colorNC)
+		os.Exit(1)
+	}
+	fmt.Printf("%s✓ swag fmt passed%s\n", colorGreen, colorNC)
+
+	// Check 6: Generate and validate API documentation
 	fmt.Println("Generating API documentation...")
 	_, err = runCommand("task", "docs:generate")
 	if err != nil {

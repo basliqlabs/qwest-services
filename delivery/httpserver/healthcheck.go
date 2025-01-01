@@ -9,12 +9,13 @@ import (
 )
 
 // HealthCheck godoc
-// @Summary      Health check
-// @Description  Check if the API is running
-// @Tags         system
-// @Produce      json
-// @Success      200  {object}  map[string]string
-// @Router       /healthcheck [get]
+//
+//	@Summary		Health check
+//	@Description	Check if the API is running
+//	@Tags			system
+//	@Produce		json
+//	@Success		200	{object}	map[string]string
+//	@Router			/healthcheck [get]
 func (s *Server) healthCheck(c echo.Context) error {
 	lang := contextutil.GetLanguage(c.Request().Context())
 

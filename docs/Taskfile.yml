@@ -15,3 +15,7 @@ tasks:
   setup-swag:
     internal: true
     cmd: go install github.com/swaggo/swag/cmd/swag@v1.16.4
+
+  swag-fmt: 
+    aliases: [fmt]
+    cmd: swag fmt

@@ -1,13 +1,13 @@
-// @title           Qwest API
-// @version         1.0
-// @description     Qwest services
+//	@title			Qwest API
+//	@version		1.0
+//	@description	Qwest services
 
-// @host      localhost:15340
-// @BasePath  /
+//	@host		localhost:15340
+//	@BasePath	/
 
-// @securityDefinitions.apikey BearerAuth
-// @in header
-// @name Authorization
+//	@securityDefinitions.apikey	BearerAuth
+//	@in							header
+//	@name						Authorization
 package main
 
 import (
