@@ -2,19 +2,15 @@ version: '3'
 
 tasks:
   generate:
-    desc: Generate API documentation
-    cmds:
-      - go run cmd/docs/generate/main.go
+    cmd: go run cmd/docs/generate/main.go
     sources:
       - ./**/*.go
     generates:
-      - docs/api/openapi.yaml
+      - docs/api/swagger.json
 
   serve:
-    desc: Serve API documentation
     deps: [generate]
-    cmds:
-      - npx @stoplight/elements docs/api/openapi.yaml --port 15341
+    cmd: go run cmd/docs/serve/main.go
 
   setup-swag:
     internal: true

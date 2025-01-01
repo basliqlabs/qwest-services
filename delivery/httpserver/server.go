@@ -2,6 +2,7 @@ package httpserver
 
 import (
 	"fmt"
+	"path/filepath"
 
 	"github.com/basliqlabs/qwest-services-auth/config"
 	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/middleware"
@@ -33,13 +34,12 @@ func (s *Server) Start() {
 	s.Router.Use(middleware.Logger())
 	s.Router.Use(middleware.Recovery())
 
-	// * Healthcheck route
 	s.Router.GET("/healthcheck", s.healthCheck)
 
-	// * Users
+	s.Router.Static("/docs", filepath.Join("docs", "api"))
+
 	s.userHandler.SetUserRoutes(s.Router)
 
-	// start the server
 	addr := fmt.Sprintf(":%d", s.cfg.HttpServer.Port)
 
 	if err := s.Router.Start(addr); err != nil {

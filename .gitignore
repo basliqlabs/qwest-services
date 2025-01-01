@@ -18,6 +18,8 @@ tmp
 scripts/git-hooks
 *.out
 *.exe
-docs/api
+docs/api/swagger.json
+docs/api/swagger.yaml
+docs/api/docs.go
 
 

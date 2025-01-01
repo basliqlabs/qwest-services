@@ -11,16 +11,17 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// Login godoc
+// userLogin lets a user get an authorization token
+//
 // @Summary      User login
 // @Description  Authenticate a user with username and password
 // @Tags         auth
 // @Accept       json
 // @Produce      json
 // @Param        request body dto.LoginRequest true "Login credentials"
-// @Success      200  {object}  envelope.Response{data=dto.LoginResponse}
-// @Failure      400  {object}  envelope.Response
-// @Failure      422  {object}  envelope.Response
+// @Success      200  {object}  envelope.OpenAPIResponseSuccess{data=dto.LoginResponse}
+// @Failure      400  {object}  envelope.OpenAPIResponseError
+// @Failure      422  {object}  envelope.OpenAPIResponseError
 // @Router       /users/login [post]
 func (h Handler) userLogin(c echo.Context) error {
 	ctx := c.Request().Context()

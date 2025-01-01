@@ -1,19 +1,12 @@
 package dto
 
-// LoginRequest represents the login credentials
 type LoginRequest struct {
 	// Username must start with a letter and be 6-31 characters long
-	// @pattern ^[a-zA-Z]{1}[a-zA-Z0-9]{5,30}$
-	Username string `json:"username" example:"johndoe"`
-
-	// User's password
-	// @minLength 8
-	Password string `json:"password" example:"********"`
+	Username string `json:"username" example:"johndoe" minLength:"6" maxLength:"31"`
+	Password string `json:"password" example:"xF54sal-M" minLength:"8"`
 }
 
-// LoginResponse represents the login response
 type LoginResponse struct {
-	// JWT token for authentication
-	// @example eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-	Token string `json:"token"`
+	// Token JWT token for authentication
+	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
 }

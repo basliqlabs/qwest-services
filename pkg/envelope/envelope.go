@@ -2,30 +2,19 @@ package envelope
 
 // Response represents the standard API response envelope
 type Response struct {
-	// Indicates if the request was successful
-	Success bool `json:"success" example:"true"`
-
-	// Contains the response data
-	Data any `json:"data,omitempty"`
-
-	// Contains error details if Success is false
-	Error *ResponseError `json:"error,omitempty"`
-
-	// Additional metadata about the response
-	Meta *Meta `json:"meta,omitempty"`
-
-	// Pagination information if applicable
-	Pagination *Pagination `json:"pagination,omitempty"`
+	Success    bool           `json:"success" example:"true"`
+	Data       any            `json:"data,omitempty"`
+	Error      *ResponseError `json:"error,omitempty"`
+	Meta       *Meta          `json:"meta,omitempty"`
+	Pagination *Pagination    `json:"pagination,omitempty"`
 }
 
 // ResponseError represents error details
 type ResponseError struct {
 	// Error code identifier
-	// @example INVALID_INPUT
 	Code ErrorCode `json:"code"`
 
 	// Human-readable error message
-	// @example Invalid input provided
 	Message string `json:"message"`
 
 	// Field-specific validation errors
