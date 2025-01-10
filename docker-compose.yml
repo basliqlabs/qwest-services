@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  qwest:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qwest
+    ports:
+      - "${APP_HTTP_PORT:-15340}:15340"
+    volumes:
+      - ./logs:/app/logs
+    environment:
+      - APP_POSTGRES_USER=${APP_POSTGRES_USER}
+      - APP_POSTGRES_PASSWORD=${APP_POSTGRES_PASSWORD}
+      - APP_POSTGRES_HOST=qwest_pg
+      - APP_POSTGRES_PORT=5432
+      - APP_POSTGRES_DB=${APP_POSTGRES_DB}
+      - APP_ENV=${APP_ENV:-development}
+    depends_on:
+      - qwest_pg
+    restart: unless-stopped
+
+  qwest_pg:
+    image: postgres:16.4
+    container_name: qwest_pg
+    ports:
+      - "${APP_POSTGRES_PORT}:5432"
+    volumes:
+      - qwest_pg_data:/var/lib/postgresql/data/
+    restart: always
+    environment:
+      - POSTGRES_USER=${APP_POSTGRES_USER}
+      - POSTGRES_PASSWORD=${APP_POSTGRES_PASSWORD}
+      - POSTGRES_DB=${APP_POSTGRES_DB}
+
+volumes:
+  qwest_pg_data:

@@ -1,0 +1,25 @@
+# editors
+.idea
+.DS_Store
+.code
+
+# secrets
+.env
+
+# logs
+logs/
+*.log
+
+# temp and cache folders
+tmp
+.task
+
+# build files
+scripts/git-hooks
+*.out
+*.exe
+docs/api/swagger.json
+docs/api/swagger.yaml
+docs/api/docs.go
+
+

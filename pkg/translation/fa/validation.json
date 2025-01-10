@@ -1,0 +1,4 @@
+{
+  "validation.required": "{{.Field}} الزامی است.",
+  "validation.invalid": "{{.Field}} نامعتبر است."
+}

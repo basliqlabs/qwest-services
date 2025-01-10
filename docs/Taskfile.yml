@@ -1,0 +1,21 @@
+version: '3'
+
+tasks:
+  generate:
+    cmd: go run cmd/docs/generate/main.go
+    sources:
+      - ./**/*.go
+    generates:
+      - docs/api/swagger.json
+
+  serve:
+    deps: [generate]
+    cmd: go run cmd/docs/serve/main.go
+
+  setup-swag:
+    internal: true
+    cmd: go install github.com/swaggo/swag/cmd/swag@v1.16.4
+
+  swag-fmt: 
+    aliases: [fmt]
+    cmd: swag fmt
