@@ -1,0 +1,22 @@
+{
+  "cSpell.words": [
+    "authvalidator",
+    "confmap",
+    "contextutil",
+    "dotenv",
+    "errmsg",
+    "godotenv",
+    "joho",
+    "knadh",
+    "koanf",
+    "labstack",
+    "natefinch",
+    "ozzo",
+    "pgmigrator",
+    "richerror",
+    "rubenv",
+    "userhandler"
+  ],
+  "files.eol": "\n",
+  "editor.formatOnSave": true
+}
