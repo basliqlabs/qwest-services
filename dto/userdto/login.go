@@ -1,8 +1,8 @@
-package dto
+package userdto
 
 type LoginRequest struct {
-	// Username must start with a letter and be 6-31 characters long
-	Username string `json:"username" example:"johndoe" minLength:"6" maxLength:"31"`
+	// Username must start with a letter and have a length of 6-31 characters
+	Username string `json:"username" example:"john doe" minLength:"6" maxLength:"31"`
 	Password string `json:"password" example:"xF54sal-M" minLength:"8"`
 }
 

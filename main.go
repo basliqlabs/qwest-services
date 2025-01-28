@@ -12,8 +12,11 @@ package main
 
 import (
 	"github.com/basliqlabs/qwest-services/delivery/httpserver/userhandler"
+	"github.com/basliqlabs/qwest-services/repository/postgresql"
+	"github.com/basliqlabs/qwest-services/repository/postgresql/postgresqluser"
+	"github.com/basliqlabs/qwest-services/service/userservice"
 	"github.com/basliqlabs/qwest-services/validator"
-	"github.com/basliqlabs/qwest-services/validator/authvalidator"
+	"github.com/basliqlabs/qwest-services/validator/uservalidator"
 
 	"github.com/basliqlabs/qwest-services/config"
 	"github.com/basliqlabs/qwest-services/delivery/httpserver"
@@ -26,9 +29,14 @@ func main() {
 	logger.Init(cfg.Logger, cfg.Env)
 	translation.Init(cfg.Language)
 
+	mainRepo := postgresql.New(cfg.Repository.Postgres)
+	userRepo := postgresqluser.New(mainRepo)
+
+	userSvc := userservice.New(userRepo)
+
 	mainValidator := validator.New()
-	userValidator := authvalidator.New(mainValidator)
-	userHandler := userhandler.New(userValidator)
+	userValidator := uservalidator.New(mainValidator)
+	userHandler := userhandler.New(userValidator, userSvc)
 
 	server := httpserver.New(httpserver.Args{
 		UserHandler: *userHandler,

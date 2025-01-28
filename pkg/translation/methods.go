@@ -9,7 +9,7 @@ import (
 	"text/template"
 )
 
-const translationDirectory = "pkg/translation"
+var translationDirectory = filepath.Join("pkg", "translation")
 
 func (t *Translator) loadTranslations() {
 	dirs, err := os.ReadDir(translationDirectory)

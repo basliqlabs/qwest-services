@@ -1,10 +1,10 @@
-package authvalidator
+package uservalidator
 
 import (
 	"context"
 	"regexp"
 
-	"github.com/basliqlabs/qwest-services/dto"
+	"github.com/basliqlabs/qwest-services/dto/userdto"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
 	"github.com/basliqlabs/qwest-services/pkg/username"
@@ -12,9 +12,9 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
-func (v Validator) Login(ctx context.Context, req *dto.LoginRequest) (validator.ValidationErrors, error) {
+func (v Validator) Login(ctx context.Context, req *userdto.LoginRequest) (validator.ValidationErrors, error) {
 	lang := contextutil.GetLanguage(ctx)
-	const op = "authvalidator.Login"
+	const op = "uservalidator.Login"
 
 	if err := validation.ValidateStruct(req,
 		validation.Field(&req.Username,

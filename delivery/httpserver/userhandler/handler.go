@@ -1,11 +1,15 @@
 package userhandler
 
-import "github.com/basliqlabs/qwest-services/validator/authvalidator"
+import (
+	"github.com/basliqlabs/qwest-services/service/userservice"
+	"github.com/basliqlabs/qwest-services/validator/uservalidator"
+)
 
 type Handler struct {
-	validator authvalidator.Validator
+	validator uservalidator.Validator
+	service   userservice.Service
 }
 
-func New(validator authvalidator.Validator) *Handler {
-	return &Handler{validator: validator}
+func New(validator uservalidator.Validator, service userservice.Service) *Handler {
+	return &Handler{validator: validator, service: service}
 }

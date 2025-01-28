@@ -1,4 +1,4 @@
-package authvalidator
+package uservalidator
 
 import "github.com/basliqlabs/qwest-services/validator"
 

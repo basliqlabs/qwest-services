@@ -13,9 +13,13 @@
     "natefinch",
     "ozzo",
     "pgmigrator",
+    "postgresqluser",
     "richerror",
     "rubenv",
-    "userhandler"
+    "userdto",
+    "userhandler",
+    "userservice",
+    "uservalidator"
   ],
   "files.eol": "\n",
   "editor.formatOnSave": true

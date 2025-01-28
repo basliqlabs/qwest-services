@@ -3,11 +3,10 @@ package userhandler
 import (
 	"net/http"
 
-	"github.com/basliqlabs/qwest-services/dto"
+	"github.com/basliqlabs/qwest-services/dto/userdto"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/envelope"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
-	"github.com/basliqlabs/qwest-services/service/authservice"
 	"github.com/labstack/echo/v4"
 )
 
@@ -15,18 +14,18 @@ import (
 //
 //	@Summary		User login
 //	@Description	Authenticate a user with username and password
-//	@Tags			auth
+//	@Tags			users
 //	@Accept			json
 //	@Produce		json
-//	@Param			request	body		dto.LoginRequest	true	"Login credentials"
-//	@Success		200		{object}	envelope.OpenAPIResponseSuccess{data=dto.LoginResponse}
+//	@Param			request	body		userdto.LoginRequest	true	"Login credentials"
+//	@Success		200		{object}	envelope.OpenAPIResponseSuccess{data=userdto.LoginResponse}
 //	@Failure		400		{object}	envelope.OpenAPIResponseError
 //	@Failure		422		{object}	envelope.OpenAPIResponseError
 //	@Router			/users/login [post]
 func (h Handler) userLogin(c echo.Context) error {
 	ctx := c.Request().Context()
 	lang := contextutil.GetLanguage(ctx)
-	req := new(dto.LoginRequest)
+	req := new(userdto.LoginRequest)
 
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, envelope.New(false).WithError(&envelope.ResponseError{
@@ -45,9 +44,7 @@ func (h Handler) userLogin(c echo.Context) error {
 		}))
 	}
 
-	// RESEARCH: pointer vs concrete structs
-	authSvc := authservice.New("")
-	res, err := authSvc.Login(ctx, req)
+	res, err := h.service.Login(ctx, req)
 
 	if err != nil {
 		return c.JSON(http.StatusUnauthorized, envelope.FromRichError(err))
