@@ -1,9 +1,9 @@
 package config
 
 import (
-	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
-	"github.com/basliqlabs/qwest-services-auth/repository/postgresql"
+	"github.com/basliqlabs/qwest-services/pkg/logger"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
+	"github.com/basliqlabs/qwest-services/repository/postgresql"
 )
 
 type HTTPServerConfig struct {

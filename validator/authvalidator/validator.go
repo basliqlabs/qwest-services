@@ -1,6 +1,6 @@
 package authvalidator
 
-import "github.com/basliqlabs/qwest-services-auth/validator"
+import "github.com/basliqlabs/qwest-services/validator"
 
 type Validator struct {
 	util *validator.Validator

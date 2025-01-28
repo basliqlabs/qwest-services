@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
+	"github.com/basliqlabs/qwest-services/pkg/logger"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"

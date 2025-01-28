@@ -3,9 +3,10 @@ package pgmigrator
 import (
 	"database/sql"
 	"fmt"
+
 	migrate "github.com/rubenv/sql-migrate"
 
-	"github.com/basliqlabs/qwest-services-auth/repository/postgresql"
+	"github.com/basliqlabs/qwest-services/repository/postgresql"
 )
 
 type Migrator struct {

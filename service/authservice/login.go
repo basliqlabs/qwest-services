@@ -3,7 +3,7 @@ package authservice
 import (
 	"context"
 
-	"github.com/basliqlabs/qwest-services-auth/dto"
+	"github.com/basliqlabs/qwest-services/dto"
 )
 
 func (s *Service) Login(ctx context.Context, req *dto.LoginRequest) (*dto.LoginResponse, error) {

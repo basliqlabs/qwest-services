@@ -3,8 +3,8 @@ package httpserver
 import (
 	"net/http"
 
-	"github.com/basliqlabs/qwest-services-auth/pkg/contextutil"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
+	"github.com/basliqlabs/qwest-services/pkg/contextutil"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
 	"github.com/labstack/echo/v4"
 )
 

@@ -2,7 +2,8 @@ package contextutil
 
 import (
 	"context"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
+
+	"github.com/basliqlabs/qwest-services/pkg/translation"
 )
 
 func WithLanguage(ctx context.Context, lang string) context.Context {

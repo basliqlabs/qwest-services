@@ -1,6 +1,6 @@
 package userhandler
 
-import "github.com/basliqlabs/qwest-services-auth/validator/authvalidator"
+import "github.com/basliqlabs/qwest-services/validator/authvalidator"
 
 type Handler struct {
 	validator authvalidator.Validator

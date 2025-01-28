@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"runtime"
 
-	"github.com/basliqlabs/qwest-services-auth/pkg/envelope"
-	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
+	"github.com/basliqlabs/qwest-services/pkg/envelope"
+	"github.com/basliqlabs/qwest-services/pkg/logger"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"
 )

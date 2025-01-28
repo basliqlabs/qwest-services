@@ -4,11 +4,11 @@ import (
 	"context"
 	"regexp"
 
-	"github.com/basliqlabs/qwest-services-auth/dto"
-	"github.com/basliqlabs/qwest-services-auth/pkg/contextutil"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
-	"github.com/basliqlabs/qwest-services-auth/pkg/username"
-	"github.com/basliqlabs/qwest-services-auth/validator"
+	"github.com/basliqlabs/qwest-services/dto"
+	"github.com/basliqlabs/qwest-services/pkg/contextutil"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
+	"github.com/basliqlabs/qwest-services/pkg/username"
+	"github.com/basliqlabs/qwest-services/validator"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 

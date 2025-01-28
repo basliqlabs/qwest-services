@@ -5,20 +5,20 @@
 //	@host		localhost:15340
 //	@BasePath	/
 
-//	@securityDefinitions.apikey	BearerAuth
-//	@in							header
-//	@name						Authorization
+// @securityDefinitions.apikey	BearerAuth
+// @in							header
+// @name						Authorization
 package main
 
 import (
-	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/userhandler"
-	"github.com/basliqlabs/qwest-services-auth/validator"
-	"github.com/basliqlabs/qwest-services-auth/validator/authvalidator"
+	"github.com/basliqlabs/qwest-services/delivery/httpserver/userhandler"
+	"github.com/basliqlabs/qwest-services/validator"
+	"github.com/basliqlabs/qwest-services/validator/authvalidator"
 
-	"github.com/basliqlabs/qwest-services-auth/config"
-	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver"
-	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
+	"github.com/basliqlabs/qwest-services/config"
+	"github.com/basliqlabs/qwest-services/delivery/httpserver"
+	"github.com/basliqlabs/qwest-services/pkg/logger"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
 )
 
 func main() {

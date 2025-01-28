@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"github.com/basliqlabs/qwest-services-auth/pkg/contextutil"
+	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/labstack/echo/v4"
 )
 

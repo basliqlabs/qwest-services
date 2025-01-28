@@ -1,4 +1,4 @@
-module github.com/basliqlabs/qwest-services-auth
+module github.com/basliqlabs/qwest-services
 
 go 1.21.2
 

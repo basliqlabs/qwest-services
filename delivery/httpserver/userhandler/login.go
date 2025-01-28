@@ -3,11 +3,11 @@ package userhandler
 import (
 	"net/http"
 
-	"github.com/basliqlabs/qwest-services-auth/dto"
-	"github.com/basliqlabs/qwest-services-auth/pkg/contextutil"
-	"github.com/basliqlabs/qwest-services-auth/pkg/envelope"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
-	"github.com/basliqlabs/qwest-services-auth/service/authservice"
+	"github.com/basliqlabs/qwest-services/dto"
+	"github.com/basliqlabs/qwest-services/pkg/contextutil"
+	"github.com/basliqlabs/qwest-services/pkg/envelope"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
+	"github.com/basliqlabs/qwest-services/service/authservice"
 	"github.com/labstack/echo/v4"
 )
 

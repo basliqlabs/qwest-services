@@ -2,7 +2,8 @@ package envelope
 
 import (
 	"errors"
-	"github.com/basliqlabs/qwest-services-auth/pkg/richerror"
+
+	"github.com/basliqlabs/qwest-services/pkg/richerror"
 )
 
 func createResponse(code ErrorCode, err *richerror.RichError) *Response {
