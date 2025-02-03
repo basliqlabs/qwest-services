@@ -4,6 +4,7 @@
     "confmap",
     "contextutil",
     "dotenv",
+    "echoutil",
     "errmsg",
     "godotenv",
     "joho",
