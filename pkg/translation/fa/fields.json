@@ -1,3 +1,4 @@
 {
-  "fields.username": "شناسه"
+  "fields.username": "شناسه",
+  "fields.password": "رمز عبور"
 }

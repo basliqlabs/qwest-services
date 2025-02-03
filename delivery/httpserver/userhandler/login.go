@@ -13,7 +13,7 @@ import (
 //
 //	@Summary		User login
 //	@Description	Authenticate a user with username/phone/email and password
-//	@Tags			  users
+//	@Tags			users
 //	@Accept			json
 //	@Produce		json
 //	@Param			request	body		userdto.LoginRequest	true	"Login credentials"

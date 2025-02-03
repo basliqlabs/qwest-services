@@ -25,6 +25,11 @@ func (v Validator) Login(ctx context.Context, req *userdto.LoginRequest) (valida
 					"MinLength": IdentifierMinLength,
 					"MaxLength": IdentifierMaxLength,
 				})),
+		),
+
+		validation.Field(&req.Password, validation.Required.Error(translation.TD(lang, "validation.required", map[string]any{
+			"Field": translation.T(lang, "fields.password"),
+		})),
 		)); err != nil {
 		return v.util.Generate(validator.Args{
 			Request:   req,
