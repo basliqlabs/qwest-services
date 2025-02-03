@@ -1,6 +1,7 @@
 package uservalidator
 
 import (
+	"github.com/basliqlabs/qwest-services/pkg/email"
 	"github.com/basliqlabs/qwest-services/pkg/username"
 	"github.com/basliqlabs/qwest-services/validator"
 )
@@ -16,4 +17,4 @@ func New(util *validator.Validator) Validator {
 }
 
 const IdentifierMinLength = username.MinUserNameLength
-const IdentifierMaxLength = 100
+const IdentifierMaxLength = email.MaxEmailLength

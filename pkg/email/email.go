@@ -9,9 +9,8 @@ import (
 const (
 	MinEmailLength = 6
 	MaxEmailLength = 45
+	EmailRegex     = `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 )
-
-var EmailRegex = `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 
 var (
 	ErrMinLength     = fmt.Errorf("email must be at least %d characters long", MaxEmailLength)
