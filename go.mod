@@ -4,6 +4,7 @@ go 1.21.2
 
 require (
 	github.com/go-ozzo/ozzo-validation/v4 v4.3.0
+	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/joho/godotenv v1.5.1
 	github.com/knadh/koanf/parsers/yaml v0.1.0
 	github.com/knadh/koanf/providers/confmap v0.1.0
@@ -39,7 +40,7 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.22.0 // indirect
+	golang.org/x/crypto v0.22.0
 	golang.org/x/net v0.24.0 // indirect
 	golang.org/x/sys v0.21.0 // indirect
 	golang.org/x/text v0.14.0 // indirect

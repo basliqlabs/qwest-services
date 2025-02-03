@@ -11,7 +11,7 @@ import (
 func (d *DB) DoesUserNameWithPasswordExist(ctx context.Context, username string, password string) (bool, error) {
 	const op = "postgresqluser.DoesUserNameWithPasswordExist"
 	row := d.db.Conn().QueryRowContext(ctx,
-		`SELECT user_id FROM users WHERE username=? AND password=?`,
+		`SELECT user_id FROM users WHERE username=? AND password_hash=?`,
 		username, password)
 	userId := new(int)
 	err := row.Scan(userId)
