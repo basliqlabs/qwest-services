@@ -14,8 +14,8 @@ const (
 var UserNameRegex = fmt.Sprintf("^[a-z]{1}[a-z0-9]{%d,%d}$", MinUserNameLength-1, MaxUserNameLength-1)
 
 var (
-	ErrMinLength     = fmt.Errorf("username must be lass than %d characters", MaxUserNameLength)
-	ErrMaxLength     = fmt.Errorf("username must be greater than %d characters", MinUserNameLength)
+	ErrMinLength     = fmt.Errorf("username must be at least %d characters long", MaxUserNameLength)
+	ErrMaxLength     = fmt.Errorf("username must be at most %d characters long", MinUserNameLength)
 	ErrRegexMismatch = fmt.Errorf("username failed to compile with regexp")
 )
 
