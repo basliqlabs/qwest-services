@@ -39,7 +39,7 @@ func Recovery() echo.MiddlewareFunc {
 
 					c.JSON(http.StatusInternalServerError, envelope.New(false).WithError(&envelope.ResponseError{
 						Code:    envelope.ErrInternal,
-						Message: translation.T(lang, "internal_server", nil),
+						Message: translation.T(lang, "internal_server"),
 					}))
 				}
 			}()

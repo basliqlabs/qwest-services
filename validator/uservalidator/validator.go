@@ -11,3 +11,6 @@ func New(util *validator.Validator) Validator {
 		util: util,
 	}
 }
+
+const IdentifierMinLength = 6
+const IdentifierMaxLength = 100

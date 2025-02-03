@@ -1,4 +1,5 @@
 {
   "validation.required": "{{.Field}} is required.",
-  "validation.invalid": "{{.Field}} is invalid."
+  "validation.invalid": "{{.Field}} is invalid.",
+  "validation.length": "{{.Field}} must be at least {{.MinLength}} and at most {{.MaxLength}} characters."
 }

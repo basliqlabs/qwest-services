@@ -15,6 +15,6 @@ func HandleBadRequest(c echo.Context) error {
 
 	return c.JSON(http.StatusBadRequest, envelope.New(false).WithError(&envelope.ResponseError{
 		Code:    envelope.ErrBadRequest,
-		Message: translation.T(lang, "bad_request", nil),
+		Message: translation.T(lang, "bad_request"),
 	}))
 }

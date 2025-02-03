@@ -16,7 +16,7 @@ func HandleUnprocessableContent(c echo.Context, validationErrors validator.Valid
 
 	return c.JSON(http.StatusUnprocessableEntity, envelope.New(false).WithError(&envelope.ResponseError{
 		Code:    envelope.ErrInvalidInput,
-		Message: translation.T(lang, "invalid_input", nil),
+		Message: translation.T(lang, "invalid_input"),
 		Fields:  validationErrors,
 	}))
 }

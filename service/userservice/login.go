@@ -7,6 +7,6 @@ import (
 )
 
 func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdto.LoginResponse, error) {
-	_, err := s.repo.DoesUserNameWithPasswordExist(ctx, req.Username, req.Password)
+	_, err := s.repo.DoesUserNameWithPasswordExist(ctx, req.Identifier, req.Password)
 	return nil, err
 }

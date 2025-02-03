@@ -2,12 +2,10 @@ package uservalidator
 
 import (
 	"context"
-	"regexp"
 
 	"github.com/basliqlabs/qwest-services/dto/userdto"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
-	"github.com/basliqlabs/qwest-services/pkg/username"
 	"github.com/basliqlabs/qwest-services/validator"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
@@ -17,13 +15,15 @@ func (v Validator) Login(ctx context.Context, req *userdto.LoginRequest) (valida
 	const op = "uservalidator.Login"
 
 	if err := validation.ValidateStruct(req,
-		validation.Field(&req.Username,
-			validation.Required.Error(translation.T(lang, "validation.required", map[string]any{
-				"Field": translation.T(lang, "fields.username", nil),
+		validation.Field(&req.Identifier,
+			validation.Required.Error(translation.TD(lang, "validation.required", map[string]any{
+				"Field": translation.T(lang, "fields.identifier"),
 			})),
-			validation.Match(regexp.MustCompile(username.UsernameRegex)).
-				Error(translation.T(lang, "validation.invalid", map[string]any{
-					"Field": translation.T(lang, "fields.username", nil),
+			validation.Length(IdentifierMinLength, IdentifierMaxLength).
+				Error(translation.TD(lang, "validation.length", map[string]any{
+					"Field":     translation.T(lang, "fields.identifier"),
+					"MinLength": IdentifierMinLength,
+					"MaxLength": IdentifierMaxLength,
 				})),
 		)); err != nil {
 		return v.util.Generate(validator.Args{

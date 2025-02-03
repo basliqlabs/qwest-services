@@ -42,7 +42,7 @@ type Args struct {
 func (v *Validator) Generate(args Args) (ValidationErrors, error) {
 	return generateFieldErrors(args.Error), richerror.
 		New(args.Operation).
-		WithMessage(translation.T(translation.GetCoreLang(), "invalid_input", nil)).
+		WithMessage(translation.T(translation.GetCoreLang(), "invalid_input")).
 		WithKind(richerror.KindInvalid).
 		WithMeta(map[string]interface{}{"req": args.Request}).
 		WithError(args.Error)

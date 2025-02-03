@@ -1,4 +1,5 @@
 {
   "validation.required": "{{.Field}} الزامی است.",
-  "validation.invalid": "{{.Field}} نامعتبر است."
+  "validation.invalid": "{{.Field}} نامعتبر است.",
+  "validation.length": "{{.Field}} باید حداقل {{.MinLength}} و جداکثر {{.MaxLength}} کااکتر باشد."
 }
