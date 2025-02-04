@@ -2,5 +2,6 @@
   "welcome": "خوش آمدید.",
   "bad_request": "درخواست نامعتبر.",
   "invalid_input": "ورودی نامعتبر.",
-  "internal_server": "خطای داخلی سرور."
+  "internal_server": "خطای داخلی سرور.",
+  "user_not_found": "کاربری یافت نشد."
 }

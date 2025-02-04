@@ -22,6 +22,7 @@
     "richerror",
     "rubenv",
     "userdto",
+    "userentity",
     "userhandler",
     "userservice",
     "uservalidator"

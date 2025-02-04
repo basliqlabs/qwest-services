@@ -1,9 +1,15 @@
 package userservice
 
-import "context"
+import (
+	"context"
+
+	"github.com/basliqlabs/qwest-services/entity/userentity"
+)
 
 type Repository interface {
-	DoesUserNameWithPasswordExist(ctx context.Context, username string, password string) (bool, error)
+	FindUserByMobile(ctx context.Context, mobile string) (userentity.UserWithPasswordHash, error)
+	FindUserByEmail(ctx context.Context, email string) (userentity.UserWithPasswordHash, error)
+	FindUserByUserName(ctx context.Context, username string) (userentity.UserWithPasswordHash, error)
 }
 
 type Service struct {

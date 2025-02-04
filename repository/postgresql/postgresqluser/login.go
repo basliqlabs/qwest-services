@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/basliqlabs/qwest-services/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/errmsg"
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
 )
@@ -28,4 +29,14 @@ func (d *DB) DoesUserNameWithPasswordExist(ctx context.Context, username string,
 			WithError(err)
 	}
 	return true, nil
+}
+
+func (d *DB) FindUserByMobile(ctx context.Context, mobile string) (userentity.UserWithPasswordHash, error) {
+	return userentity.UserWithPasswordHash{}, nil
+}
+func (d *DB) FindUserByEmail(ctx context.Context, email string) (userentity.UserWithPasswordHash, error) {
+	return userentity.UserWithPasswordHash{}, nil
+}
+func (d *DB) FindUserByUserName(ctx context.Context, username string) (userentity.UserWithPasswordHash, error) {
+	return userentity.UserWithPasswordHash{}, nil
 }
