@@ -3,5 +3,5 @@
   "bad_request": "Bad request.",
   "invalid_input": "Invalid input.",
   "internal_server": "Internal server error.",
-  "user_not_found": "User was not found."
+  "user_not_found": "No user matching the provided identifier and password was found."
 }

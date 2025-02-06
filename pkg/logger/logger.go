@@ -61,7 +61,7 @@ func Init(cfg Config, env string) {
 	var core zapcore.Core
 	if env == "development" {
 		core = zapcore.NewTee(
-			zapcore.NewCore(encoder, zapcore.AddSync(os.Stdout), level),
+			zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level),
 			zapcore.NewCore(encoder, fileSyncer, level),
 		)
 	} else {

@@ -29,13 +29,11 @@ func (h Handler) userLogin(c echo.Context) error {
 	}
 	validationErrors, err := h.validator.Login(ctx, req)
 	if err != nil {
-		echoutil.HandleUnprocessableContent(c, validationErrors)
+		return echoutil.HandleUnprocessableContent(c, validationErrors)
 	}
 	res, err := h.service.Login(ctx, req)
 	if err != nil {
-		echoutil.HandleInternalServerError(c, err)
+		return echoutil.HandleGenericError(c, err)
 	}
-	return c.JSON(http.StatusOK, envelope.New(true).WithData(map[string]any{
-		"login": res,
-	}))
+	return c.JSON(http.StatusOK, envelope.New(true).WithData(res))
 }

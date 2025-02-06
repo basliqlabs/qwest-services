@@ -2,8 +2,10 @@ package envelope
 
 import (
 	"errors"
+	"net/http"
 
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
+	"github.com/labstack/echo/v4"
 )
 
 func createResponse(code ErrorCode, err *richerror.RichError) *Response {
@@ -13,31 +15,28 @@ func createResponse(code ErrorCode, err *richerror.RichError) *Response {
 	})
 }
 
-func FromRichError(err error) *Response {
+func FromRichError(c echo.Context, err error) (int, *Response) {
 	var re *richerror.RichError
 	if errors.As(err, &re) {
 		switch re.GetKind() {
 		case richerror.KindInvalid:
-			return createResponse(ErrInvalidInput, re)
-		case richerror.KindForbidden:
-			return createResponse(ErrForbidden, re)
-		case richerror.KindUnexpected:
-			return createResponse(ErrInternal, re)
+			return http.StatusBadRequest, createResponse(ErrInvalidInput, re)
 		case richerror.KindUnauthorized:
-			return createResponse(ErrUnauthorized, re)
+			return http.StatusUnauthorized, createResponse(ErrUnauthorized, re)
+		case richerror.KindForbidden:
+			return http.StatusForbidden, createResponse(ErrForbidden, re)
 		case richerror.KindNotFound:
-			return createResponse(ErrNotFound, re)
+			return http.StatusNotFound, createResponse(ErrNotFound, re)
+		// KindUUnexpected should not leak any data to the client, so it responds with a generic message.
+		case richerror.KindUnexpected:
+			// lang := contextutil.GetLanguage(c.Request().Context())
+			return http.StatusInternalServerError, New(false).WithError(&ResponseError{
+				Code:    ErrInternal,
+				Message: re.GetMessage(),
+			})
 		default:
-			// TODO: this should not happen
-			return nil
+			return http.StatusInternalServerError, nil
 		}
 	}
-	return nil
-}
-
-func BadRequest() *Response {
-	return New(false).WithError(&ResponseError{
-		Code:    ErrBadRequest,
-		Message: "",
-	})
+	return http.StatusInternalServerError, nil
 }

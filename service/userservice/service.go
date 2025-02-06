@@ -7,9 +7,9 @@ import (
 )
 
 type Repository interface {
-	FindUserByMobile(ctx context.Context, mobile string) (userentity.UserWithPasswordHash, error)
-	FindUserByEmail(ctx context.Context, email string) (userentity.UserWithPasswordHash, error)
-	FindUserByUserName(ctx context.Context, username string) (userentity.UserWithPasswordHash, error)
+	FindUserByMobile(ctx context.Context, mobile string) (userentity.UserWithPasswordHash, bool, error)
+	FindUserByEmail(ctx context.Context, email string) (userentity.UserWithPasswordHash, bool, error)
+	FindUserByUserName(ctx context.Context, username string) (userentity.UserWithPasswordHash, bool, error)
 }
 
 type Service struct {

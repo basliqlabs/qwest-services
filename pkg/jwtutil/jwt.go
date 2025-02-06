@@ -7,6 +7,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+// TODO - add to env config
 var secretKey = []byte("your_secret_key")
 
 func Generate(username string) (string, error) {

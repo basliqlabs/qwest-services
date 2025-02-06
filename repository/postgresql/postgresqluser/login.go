@@ -31,12 +31,12 @@ func (d *DB) DoesUserNameWithPasswordExist(ctx context.Context, username string,
 	return true, nil
 }
 
-func (d *DB) FindUserByMobile(ctx context.Context, mobile string) (userentity.UserWithPasswordHash, error) {
-	return userentity.UserWithPasswordHash{}, nil
+func (d *DB) FindUserByMobile(ctx context.Context, mobile string) (userentity.UserWithPasswordHash, bool, error) {
+	return userentity.UserWithPasswordHash{}, false, nil
 }
-func (d *DB) FindUserByEmail(ctx context.Context, email string) (userentity.UserWithPasswordHash, error) {
-	return userentity.UserWithPasswordHash{}, nil
+func (d *DB) FindUserByEmail(ctx context.Context, email string) (userentity.UserWithPasswordHash, bool, error) {
+	return userentity.UserWithPasswordHash{}, false, nil
 }
-func (d *DB) FindUserByUserName(ctx context.Context, username string) (userentity.UserWithPasswordHash, error) {
-	return userentity.UserWithPasswordHash{}, nil
+func (d *DB) FindUserByUserName(ctx context.Context, username string) (userentity.UserWithPasswordHash, bool, error) {
+	return userentity.UserWithPasswordHash{}, false, nil
 }
