@@ -87,7 +87,7 @@ func (r *RichError) GetMessage() string {
 	ok := errors.As(r.wrappedError, &nestedRichError)
 
 	if !ok {
-		return ""
+		return r.wrappedError.Error()
 	}
 
 	return nestedRichError.GetMessage()

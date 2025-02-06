@@ -6,10 +6,13 @@ import (
 	"github.com/basliqlabs/qwest-services/dto/userdto"
 	"github.com/basliqlabs/qwest-services/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
+	"github.com/basliqlabs/qwest-services/pkg/email"
 	"github.com/basliqlabs/qwest-services/pkg/jwtutil"
+	"github.com/basliqlabs/qwest-services/pkg/mobile"
 	"github.com/basliqlabs/qwest-services/pkg/passwordhash"
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
+	"github.com/basliqlabs/qwest-services/pkg/username"
 )
 
 func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdto.LoginResponse, error) {
@@ -18,18 +21,18 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 
 	var (
 		user  userentity.UserWithPasswordHash
-		found       = true
+		found       = false
 		err   error = nil
 	)
 
 	// TODO - check for validation errors
-	// if valid, _ := email.IsValid(req.Identifier); valid {
-	// 	user, found, err = s.repo.FindUserByEmail(ctx, req.Identifier)
-	// } else if valid, _ := username.IsValid(req.Identifier); valid {
-	// 	user, found, err = s.repo.FindUserByUserName(ctx, req.Identifier)
-	// } else if valid, _ := mobile.IsValid(req.Identifier); valid {
-	// 	user, found, err = s.repo.FindUserByMobile(ctx, req.Identifier)
-	// }
+	if valid, _ := email.IsValid(req.Identifier); valid {
+		user, found, err = s.repo.FindUserByEmail(ctx, req.Identifier)
+	} else if valid, _ := username.IsValid(req.Identifier); valid {
+		user, found, err = s.repo.FindUserByUserName(ctx, req.Identifier)
+	} else if valid, _ := mobile.IsValid(req.Identifier); valid {
+		user, found, err = s.repo.FindUserByMobile(ctx, req.Identifier)
+	}
 
 	if err != nil {
 		return &userdto.LoginResponse{}, richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
