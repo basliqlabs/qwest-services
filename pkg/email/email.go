@@ -7,27 +7,27 @@ import (
 )
 
 const (
-	MinEmailLength = 6
-	MaxEmailLength = 45
-	EmailRegex     = `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
+	MinLength = 6
+	MaxLength = 45
+	Regex     = `^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$`
 )
 
 var (
-	ErrMinLength     = fmt.Errorf("email must be at least %d characters long", MaxEmailLength)
-	ErrMaxLength     = fmt.Errorf("email must be at most %d characters long", MinEmailLength)
+	ErrMinLength     = fmt.Errorf("email must be at least %d characters long", MaxLength)
+	ErrMaxLength     = fmt.Errorf("email must be at most %d characters long", MinLength)
 	ErrRegexMismatch = fmt.Errorf("email failed to compile with regexp")
 )
 
 func IsValid(email string) (bool, error) {
-	if len(email) < MinEmailLength {
+	if len(email) < MinLength {
 		return false, ErrMinLength
 	}
 
-	if len(email) > MaxEmailLength {
+	if len(email) > MaxLength {
 		return false, ErrMaxLength
 	}
 
-	match, err := regexp.MatchString(EmailRegex, strings.ToLower(email))
+	match, err := regexp.MatchString(Regex, strings.ToLower(email))
 	if err != nil {
 		return false, ErrRegexMismatch
 	}

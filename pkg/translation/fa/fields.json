@@ -1,4 +1,5 @@
 {
   "fields.identifier": "شناسه",
-  "fields.password": "رمز عبور"
+  "fields.password": "رمز عبور",
+  "fields.email": "ایمیل"
 }

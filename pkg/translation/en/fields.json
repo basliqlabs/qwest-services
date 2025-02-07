@@ -1,4 +1,5 @@
 {
   "fields.identifier": "Identifier",
-  "fields.password": "Password"
+  "fields.password": "Password",
+  "fields.email": "Email"
 }

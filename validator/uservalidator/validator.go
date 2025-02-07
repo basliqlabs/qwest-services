@@ -16,5 +16,5 @@ func New(util *validator.Validator) Validator {
 	}
 }
 
-const IdentifierMinLength = username.MinUserNameLength
-const IdentifierMaxLength = email.MaxEmailLength
+const identifierMinLength = username.MinUserNameLength
+const identifierMaxLength = email.MaxLength
