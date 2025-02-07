@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
-	"github.com/basliqlabs/qwest-services/pkg/logger"
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
 	"github.com/labstack/echo/v4"
@@ -34,7 +33,7 @@ func FromRichError(c echo.Context, err error) (int, *Response) {
 		case richerror.KindUnexpected:
 			lang := contextutil.GetLanguage(c.Request().Context())
 			// TODO - aggregate this log with request log
-			logger.L().Named("error-handler").Error(re.GetMessage())
+			// logger.L().Named("error-handler").Error(re.GetMessage())
 			return http.StatusInternalServerError, New(false).WithError(&ResponseError{
 				Code:    ErrInternal,
 				Message: translation.T(lang, "internal_server"),

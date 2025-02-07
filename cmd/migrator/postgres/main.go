@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/basliqlabs/qwest-services/config"
-	"github.com/basliqlabs/qwest-services/repository/postgresql/pgmigrator"
+	"github.com/basliqlabs/qwest-services/internal/config"
+	"github.com/basliqlabs/qwest-services/internal/repository/postgresql/pgmigrator"
 )
 
 func main() {

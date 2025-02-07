@@ -1,6 +1,6 @@
 package postgresqluser
 
-import "github.com/basliqlabs/qwest-services/repository/postgresql"
+import "github.com/basliqlabs/qwest-services/internal/repository/postgresql"
 
 type DB struct {
 	db *postgresql.DB

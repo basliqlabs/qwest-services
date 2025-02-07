@@ -6,5 +6,6 @@ import (
 )
 
 func HandleGenericError(c echo.Context, err error) error {
-	return c.JSON(envelope.FromRichError(c, err))
+	c.JSON(envelope.FromRichError(c, err))
+	return err
 }

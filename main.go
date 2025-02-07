@@ -11,15 +11,15 @@
 package main
 
 import (
-	"github.com/basliqlabs/qwest-services/delivery/httpserver/userhandler"
-	"github.com/basliqlabs/qwest-services/repository/postgresql"
-	"github.com/basliqlabs/qwest-services/repository/postgresql/postgresqluser"
-	"github.com/basliqlabs/qwest-services/service/userservice"
-	"github.com/basliqlabs/qwest-services/validator"
-	"github.com/basliqlabs/qwest-services/validator/uservalidator"
+	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver/userhandler"
+	"github.com/basliqlabs/qwest-services/internal/repository/postgresql"
+	"github.com/basliqlabs/qwest-services/internal/repository/postgresql/postgresqluser"
+	"github.com/basliqlabs/qwest-services/internal/service/userservice"
+	"github.com/basliqlabs/qwest-services/internal/validator"
+	"github.com/basliqlabs/qwest-services/internal/validator/uservalidator"
 
-	"github.com/basliqlabs/qwest-services/config"
-	"github.com/basliqlabs/qwest-services/delivery/httpserver"
+	"github.com/basliqlabs/qwest-services/internal/config"
+	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver"
 	"github.com/basliqlabs/qwest-services/pkg/logger"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
 )

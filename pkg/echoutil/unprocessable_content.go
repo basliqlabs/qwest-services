@@ -3,10 +3,10 @@ package echoutil
 import (
 	"net/http"
 
+	"github.com/basliqlabs/qwest-services/internal/validator"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/envelope"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
-	"github.com/basliqlabs/qwest-services/validator"
 	"github.com/labstack/echo/v4"
 )
 

@@ -3,7 +3,7 @@ package userservice
 import (
 	"context"
 
-	"github.com/basliqlabs/qwest-services/entity/userentity"
+	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
 )
 
 type Repository interface {

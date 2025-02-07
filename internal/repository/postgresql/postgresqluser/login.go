@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/basliqlabs/qwest-services/entity/userentity"
+	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/errmsg"
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
 )

@@ -6,7 +6,7 @@ import (
 
 	migrate "github.com/rubenv/sql-migrate"
 
-	"github.com/basliqlabs/qwest-services/repository/postgresql"
+	"github.com/basliqlabs/qwest-services/internal/repository/postgresql"
 )
 
 type Migrator struct {

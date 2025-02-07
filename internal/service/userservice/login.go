@@ -3,8 +3,8 @@ package userservice
 import (
 	"context"
 
-	"github.com/basliqlabs/qwest-services/dto/userdto"
-	"github.com/basliqlabs/qwest-services/entity/userentity"
+	"github.com/basliqlabs/qwest-services/internal/dto/userdto"
+	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/email"
 	"github.com/basliqlabs/qwest-services/pkg/jwtutil"

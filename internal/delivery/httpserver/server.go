@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/basliqlabs/qwest-services/config"
-	"github.com/basliqlabs/qwest-services/delivery/httpserver/middleware"
-	"github.com/basliqlabs/qwest-services/delivery/httpserver/userhandler"
+	"github.com/basliqlabs/qwest-services/internal/config"
+	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver/middleware"
+	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver/userhandler"
 	"github.com/labstack/echo/v4"
 )
 

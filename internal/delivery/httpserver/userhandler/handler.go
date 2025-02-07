@@ -1,8 +1,8 @@
 package userhandler
 
 import (
-	"github.com/basliqlabs/qwest-services/service/userservice"
-	"github.com/basliqlabs/qwest-services/validator/uservalidator"
+	"github.com/basliqlabs/qwest-services/internal/service/userservice"
+	"github.com/basliqlabs/qwest-services/internal/validator/uservalidator"
 	"github.com/labstack/echo/v4"
 )
 

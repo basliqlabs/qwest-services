@@ -3,7 +3,7 @@ package userhandler
 import (
 	"net/http"
 
-	"github.com/basliqlabs/qwest-services/dto/userdto"
+	"github.com/basliqlabs/qwest-services/internal/dto/userdto"
 	"github.com/basliqlabs/qwest-services/pkg/echoutil"
 	"github.com/basliqlabs/qwest-services/pkg/envelope"
 	"github.com/labstack/echo/v4"
