@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-// userLogin lets a user get an authorization token
+// login lets a user get an authorization token
 //
 //	@Summary		User login
 //	@Description	Authenticate a user with username/phone/email and password
@@ -21,7 +21,7 @@ import (
 //	@Failure		400		{object}	envelope.OpenAPIResponseError
 //	@Failure		422		{object}	envelope.OpenAPIResponseError
 //	@Router			/users/login [post]
-func (h Handler) userLogin(c echo.Context) error {
+func (h Handler) login(c echo.Context) error {
 	ctx := c.Request().Context()
 	req := new(userdto.LoginRequest)
 	if err := c.Bind(req); err != nil {
