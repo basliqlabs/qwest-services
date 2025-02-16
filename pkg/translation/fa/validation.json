@@ -1,6 +1,9 @@
 {
   "validation.required": "{{.Field}} الزامی است.",
   "validation.invalid": "{{.Field}} نامعتبر است.",
-  "validation.length": "{{.Field}} باید حداقل {{.MinLength}} و جداکثر {{.MaxLength}} کااکتر باشد.",
-  "validation.invalidFormat": "{{.Field}} فرمت صحیحی ندارد."
+  "validation.length": "{{.Field}} باید حداقل {{.MinLength}} و حداکثر {{.MaxLength}} کاراکتر باشد.",
+  "validation.invalid_format": "{{.Field}} فرمت صحیحی ندارد.",
+  "validation.min_length": "{{.Field}} باید حداقل {{.MinLength}} کاراکتر داشته باشد.",
+  "validation.max_length": "{{.Field}} باید حداکثر {{.MaxLength}} کاراکتر داشته باشد.",
+  "validation.invalid_password_format": "رمز عبور باید یک رشتۀ انگلیسی شامل حداقل یک عدد و یک حرف باشد."
 }
