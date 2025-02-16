@@ -2,6 +2,7 @@ package richerror
 
 import (
 	"errors"
+	"fmt"
 )
 
 type Kind int
@@ -59,6 +60,13 @@ func (r *RichError) Error() string {
 }
 
 func (r *RichError) GetOperation() string {
+	if r.wrappedError != nil {
+		re, ok := r.wrappedError.(*RichError)
+		if ok {
+			return fmt.Sprintf("%s\n\t%s", re.GetOperation(), r.operation)
+		}
+	}
+
 	return r.operation
 }
 

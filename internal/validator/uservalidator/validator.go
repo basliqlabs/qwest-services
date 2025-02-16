@@ -1,9 +1,9 @@
 package uservalidator
 
 import (
+	"github.com/basliqlabs/qwest-services/internal/validator"
 	"github.com/basliqlabs/qwest-services/pkg/email"
 	"github.com/basliqlabs/qwest-services/pkg/username"
-	"github.com/basliqlabs/qwest-services/internal/validator"
 )
 
 type Validator struct {

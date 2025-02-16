@@ -31,8 +31,8 @@ func New(args Args) *Server {
 
 func (s *Server) Start() {
 	s.Router.Use(middleware.TranslatorMiddleware())
-	s.Router.Use(middleware.Logger())
 	s.Router.Use(middleware.Recovery())
+	s.Router.Use(middleware.Logger())
 
 	s.Router.GET("/healthcheck", s.healthCheck)
 

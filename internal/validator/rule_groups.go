@@ -28,7 +28,7 @@ func PasswordRule(lang string, field string, required bool) []validation.Rule {
 			return fmt.Errorf("password is not valid")
 		}
 		valid, err := password.IsValid(s)
-		if !valid  {
+		if !valid {
 			return fmt.Errorf("password is not valid")
 		}
 		if err != nil {
@@ -36,7 +36,7 @@ func PasswordRule(lang string, field string, required bool) []validation.Rule {
 		}
 		return nil
 	}
-	
+
 	rules := []validation.Rule{
 		LengthRule(lang, field, password.MinLength, password.MaxLength),
 		validation.By(isValid),

@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"github.com/basliqlabs/qwest-services/pkg/logger"
+	"github.com/basliqlabs/qwest-services/pkg/richerror"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"go.uber.org/zap"
@@ -23,19 +24,27 @@ func Logger() echo.MiddlewareFunc {
 		LogProtocol:      true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
 			// TODO: add config to check if logging is enabled
-			errMsg := ""
+			errorMessage := ""
+			operation := ""
 			if v.Error != nil {
-				errMsg = v.Error.Error()
+				re, ok := v.Error.(*richerror.RichError)
+				if ok {
+					errorMessage = re.GetMessage()
+					operation = re.GetOperation()
+				} else {
+					errorMessage = v.Error.Error()
+				}
 			}
 
 			fields := []zap.Field{
 				zap.String("request_id", v.RequestID),
 				zap.String("host", v.Host),
-				zap.String("content-length", v.ContentLength),
+				zap.String("content_length", v.ContentLength),
 				zap.String("protocol", v.Protocol),
 				zap.String("method", v.Method),
 				zap.Duration("latency", v.Latency),
-				zap.String("error", errMsg),
+				zap.String("error_message", errorMessage),
+				zap.String("operation", operation),
 				zap.String("remote_ip", v.RemoteIP),
 				zap.Int64("response_size", v.ResponseSize),
 				zap.String("uri", v.URI),

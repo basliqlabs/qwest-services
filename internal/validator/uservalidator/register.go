@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/basliqlabs/qwest-services/internal/dto/userdto"
-	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/internal/validator"
+	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	validation "github.com/go-ozzo/ozzo-validation/v4"
 )
 
