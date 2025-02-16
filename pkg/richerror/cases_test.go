@@ -22,7 +22,7 @@ var getOperationTestCases = []testCase{
 				operation: "Operation2",
 			},
 		},
-		expected: "Operation1",
+		expected: "Operation2\n\tOperation1",
 	},
 	{
 		description: "should return the correct operation value",
@@ -35,7 +35,7 @@ var getOperationTestCases = []testCase{
 				},
 			},
 		},
-		expected: "Operation1",
+		expected: "Operation3\n\tOperation2\n\tOperation1",
 	},
 }
 

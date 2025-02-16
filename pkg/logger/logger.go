@@ -28,7 +28,7 @@ func Init(cfg Config, env string) {
 		NameKey:        "logger",
 		CallerKey:      "caller",
 		FunctionKey:    zapcore.OmitKey,
-		MessageKey:     "msg",
+		MessageKey:     "message",
 		StacktraceKey:  "stacktrace",
 		LineEnding:     zapcore.DefaultLineEnding,
 		EncodeLevel:    zapcore.LowercaseLevelEncoder,
@@ -61,7 +61,7 @@ func Init(cfg Config, env string) {
 	var core zapcore.Core
 	if env == "development" {
 		core = zapcore.NewTee(
-			zapcore.NewCore(encoder, zapcore.AddSync(os.Stdout), level),
+			zapcore.NewCore(zapcore.NewConsoleEncoder(encoderConfig), zapcore.AddSync(os.Stdout), level),
 			zapcore.NewCore(encoder, fileSyncer, level),
 		)
 	} else {
@@ -70,7 +70,7 @@ func Init(cfg Config, env string) {
 
 	globalLogger = zap.New(core,
 		zap.AddCaller(),
-		zap.AddStacktrace(zapcore.ErrorLevel),
+		zap.AddStacktrace(zapcore.FatalLevel),
 	)
 }
 

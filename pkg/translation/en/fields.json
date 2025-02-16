@@ -1,3 +1,5 @@
 {
-    "fields.username": "Username"
+  "fields.identifier": "Identifier",
+  "fields.password": "Password",
+  "fields.email": "Email"
 }

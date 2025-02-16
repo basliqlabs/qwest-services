@@ -27,7 +27,8 @@ COPY --from=builder /app/main .
 COPY .env .
 
 COPY --chown=appuser:appuser config.yml .
-COPY --chown=appuser:appuser translation/ ./translation/
+COPY --chown=appuser:appuser pkg/translation/ ./pkg/translation/
+COPY --chown=appuser:appuser docs/api/ ./docs/api
 
 USER appuser
 

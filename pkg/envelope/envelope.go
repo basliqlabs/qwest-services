@@ -11,14 +11,9 @@ type Response struct {
 
 // ResponseError represents error details
 type ResponseError struct {
-	// Error code identifier
-	Code ErrorCode `json:"code"`
-
-	// Human-readable error message
-	Message string `json:"message"`
-
-	// Field-specific validation errors
-	Fields map[string]string `json:"fields,omitempty"`
+	Code    ErrorCode         `json:"code"`
+	Message string            `json:"message"`
+	Fields  map[string]string `json:"fields,omitempty"`
 }
 
 type Meta map[string]any

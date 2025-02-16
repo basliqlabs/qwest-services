@@ -2,6 +2,7 @@
 .idea
 .DS_Store
 .code
+.vscode
 
 # secrets
 .env
@@ -15,6 +16,7 @@ tmp
 .task
 
 # build files
+scripts
 scripts/git-hooks
 *.out
 *.exe

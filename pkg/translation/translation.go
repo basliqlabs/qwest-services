@@ -26,12 +26,21 @@ func Init(cfg Config) {
 	globalTranslator = t
 }
 
-// T returns a translation for a key in the current language
-func T(lang string, key string, data map[string]any) string {
+// TD returns a translation for a key in the current language with additional data
+func TD(lang string, key string, data map[string]any) string {
 	if globalTranslator == nil {
 		panic("translator not initialized")
 	}
 	return globalTranslator.T(lang, key, data)
+}
+
+// T is the same as Td but with no additional data
+// It is just a helper function to make things more concise
+func T(lang string, key string) string {
+	if globalTranslator == nil {
+		panic("translator not initialized")
+	}
+	return globalTranslator.T(lang, key, nil)
 }
 
 // SetLanguage sets the current language

@@ -26,7 +26,7 @@ func TestRichError_GetOperation(t *testing.T) {
 	for _, tc := range getOperationTestCases {
 		t.Run(tc.description, func(t *testing.T) {
 			if actual := buildRichError(tc.args); tc.expected != actual.GetOperation() {
-				t.Errorf("\nExpected: %v\nActual: %v\n", tc.expected, actual)
+				t.Errorf("\nExpected: %v\nActual: %v\n", tc.expected, actual.GetOperation())
 			}
 		})
 	}

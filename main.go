@@ -5,20 +5,23 @@
 //	@host		localhost:15340
 //	@BasePath	/
 
-//	@securityDefinitions.apikey	BearerAuth
-//	@in							header
-//	@name						Authorization
+// @securityDefinitions.apikey	BearerAuth
+// @in							header
+// @name						Authorization
 package main
 
 import (
-	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver/userhandler"
-	"github.com/basliqlabs/qwest-services-auth/validator"
-	"github.com/basliqlabs/qwest-services-auth/validator/authvalidator"
+	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver/userhandler"
+	"github.com/basliqlabs/qwest-services/internal/repository/postgresql"
+	"github.com/basliqlabs/qwest-services/internal/repository/postgresql/postgresqluser"
+	"github.com/basliqlabs/qwest-services/internal/service/userservice"
+	"github.com/basliqlabs/qwest-services/internal/validator"
+	"github.com/basliqlabs/qwest-services/internal/validator/uservalidator"
 
-	"github.com/basliqlabs/qwest-services-auth/config"
-	"github.com/basliqlabs/qwest-services-auth/delivery/httpserver"
-	"github.com/basliqlabs/qwest-services-auth/pkg/logger"
-	"github.com/basliqlabs/qwest-services-auth/pkg/translation"
+	"github.com/basliqlabs/qwest-services/internal/config"
+	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver"
+	"github.com/basliqlabs/qwest-services/pkg/logger"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
 )
 
 func main() {
@@ -26,9 +29,14 @@ func main() {
 	logger.Init(cfg.Logger, cfg.Env)
 	translation.Init(cfg.Language)
 
+	mainRepo := postgresql.New(cfg.Repository.Postgres)
+	userRepo := postgresqluser.New(mainRepo)
+
+	userSvc := userservice.New(userRepo)
+
 	mainValidator := validator.New()
-	userValidator := authvalidator.New(mainValidator)
-	userHandler := userhandler.New(userValidator)
+	userValidator := uservalidator.New(mainValidator)
+	userHandler := userhandler.New(userValidator, userSvc)
 
 	server := httpserver.New(httpserver.Args{
 		UserHandler: *userHandler,
