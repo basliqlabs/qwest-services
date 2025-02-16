@@ -2,5 +2,8 @@
   "validation.required": "{{.Field}} is required.",
   "validation.invalid": "{{.Field}} is invalid.",
   "validation.length": "{{.Field}} must be at least {{.MinLength}} and at most {{.MaxLength}} characters long.",
-  "validation.invalidFormat": "{{.Field}} has invalid format."
+  "validation.invalid_format": "{{.Field}} has invalid format.",
+  "validation.min_length": "{{.Field}} must be at least {{.MinLength}} characters long.",
+  "validation.max_length": "{{.Field}} must be at most {{.MaxLength}} characters long.",
+  "validation.invalid_password_format": "Password must be an English string containing at least one letter and one digit."
 }

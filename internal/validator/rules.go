@@ -23,7 +23,7 @@ func LengthRule(lang string, field string, min int, max int) validation.Rule {
 }
 
 func FormatRule(lang string, field string, regex string) validation.Rule {
-	return validation.Match(regexp.MustCompile(regex)).Error(translation.TD(lang, "validation.invalidFormat", map[string]any{
+	return validation.Match(regexp.MustCompile(regex)).Error(translation.TD(lang, "validation.invalid_format", map[string]any{
 		"Field": translation.T(lang, field),
 	}))
 }
