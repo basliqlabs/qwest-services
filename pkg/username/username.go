@@ -2,8 +2,10 @@ package username
 
 import (
 	"fmt"
+	"math/rand"
 	"regexp"
 	"strings"
+	"time"
 )
 
 const (
@@ -33,4 +35,23 @@ func IsValid(username string) (bool, error) {
 		return false, ErrRegexMismatch
 	}
 	return match, nil
+}
+
+func GenerateUnique(base string) string {
+	base = strings.ToLower(base)
+	reg := regexp.MustCompile("[^a-z0-9]+")
+	base = reg.ReplaceAllString(base, "_")
+
+	if len(base) < MinUserNameLength {
+		base = base + strings.Repeat("0", MinUserNameLength-len(base))
+	}
+
+	if len(base) > MaxUserNameLength-6 {
+		base = base[:MaxUserNameLength-6]
+	}
+
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
+	suffix := r.Intn(999999)
+
+	return fmt.Sprintf("%s%06d", base, suffix)
 }

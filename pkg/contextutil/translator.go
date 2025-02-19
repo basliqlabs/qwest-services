@@ -28,19 +28,3 @@ func GetLanguage(ctx context.Context) string {
 
 	return lang
 }
-
-func GetCoreLang(ctx context.Context) string {
-	lang := ""
-
-	if t, ok := ctx.Value(translatorKey).(*translation.Translator); ok {
-		lang = t.GetCoreLang()
-	}
-
-	if lang == "" {
-		if t, ok := ctx.Value(translatorKey).(*translation.Translator); ok {
-			lang = t.GetDefaultLang()
-		}
-	}
-
-	return lang
-}
