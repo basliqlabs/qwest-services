@@ -20,6 +20,7 @@ import (
 
 	"github.com/basliqlabs/qwest-services/internal/config"
 	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver"
+	"github.com/basliqlabs/qwest-services/pkg/jwtutil"
 	"github.com/basliqlabs/qwest-services/pkg/logger"
 	"github.com/basliqlabs/qwest-services/pkg/translation"
 )
@@ -31,8 +32,9 @@ func main() {
 
 	mainRepo := postgresql.New(cfg.Repository.Postgres)
 	userRepo := postgresqluser.New(mainRepo)
+	jwt := jwtutil.New(cfg.Auth.JWT)
 
-	userSvc := userservice.New(userRepo)
+	userSvc := userservice.New(userRepo, jwt)
 
 	mainValidator := validator.New()
 	userValidator := uservalidator.New(mainValidator)

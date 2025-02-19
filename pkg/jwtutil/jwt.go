@@ -2,24 +2,40 @@ package jwtutil
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// TODO - add to env config
-var secretKey = []byte("your_secret_key")
+type JWTConfig struct {
+	ExpirationTime time.Duration `koanf:"expiration_time_ns"`
+	SecretKey      string        `koanf:"secret_key"`
+}
 
-func Generate(username string) (string, error) {
+type JWT struct {
+	config JWTConfig
+}
+
+func New(cfg JWTConfig) JWT {
+	return JWT{
+		config: cfg,
+	}
+}
+
+func (j *JWT) Generate(username string, email string) (string, error) {
+	fmt.Println("j.config.ExpirationTime", j.config.ExpirationTime)
+	
 	claims := jwt.MapClaims{
 		"username": username,
-		"exp":      time.Now().Add(time.Hour * 2).Unix(),
+		"email":    email,
+		"exp":      time.Now().Add(j.config.ExpirationTime).Unix(),
 		"iat":      time.Now().Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
-	tokenString, err := token.SignedString(secretKey)
+	tokenString, err := token.SignedString([]byte(j.config.SecretKey))
 	if err != nil {
 		return "", err
 	}
@@ -27,12 +43,12 @@ func Generate(username string) (string, error) {
 	return tokenString, nil
 }
 
-func DecodeJWT(tokenString string) (map[string]interface{}, error) {
+func (j *JWT) Decode(tokenString string) (map[string]interface{}, error) {
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, errors.New("")
 		}
-		return secretKey, nil
+		return []byte(j.config.SecretKey), nil
 	})
 
 	if err != nil {

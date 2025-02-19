@@ -7,7 +7,6 @@ import (
 	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/email"
-	"github.com/basliqlabs/qwest-services/pkg/jwtutil"
 	"github.com/basliqlabs/qwest-services/pkg/mobile"
 	"github.com/basliqlabs/qwest-services/pkg/passwordhash"
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
@@ -61,8 +60,7 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 			WithMessage(translation.T(lang, "user_not_found"))
 	}
 
-	// TODO - fix JWT
-	token, err := jwtutil.Generate(user.UserName)
+	token, err := s.jwt.Generate(user.UserName, user.Email)
 	if err != nil {
 		return &userdto.LoginResponse{}, richerror.
 			New(op).

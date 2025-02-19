@@ -13,7 +13,7 @@ const (
 	MaxUserNameLength = 32
 )
 
-var UserNameRegex = fmt.Sprintf("^[a-z]{1}[a-z0-9]{%d,%d}$", MinUserNameLength-1, MaxUserNameLength-1)
+var UserNameRegex = fmt.Sprintf("^[a-z]{1}[a-z0-9_]{%d,%d}$", MinUserNameLength-1, MaxUserNameLength-1)
 
 var (
 	ErrMinLength     = fmt.Errorf("username must be at least %d characters long", MaxUserNameLength)
