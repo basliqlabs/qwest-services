@@ -25,4 +25,4 @@ logger:
 auth:
   jwt:
     secret_key:
-    expiration_time_ns: 3600000000000 # 1 hour
+    access_token_expiration_time_ns: 3600000000000 # 1 hour

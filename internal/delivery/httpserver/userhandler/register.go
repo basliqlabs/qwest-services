@@ -31,9 +31,10 @@ func (h Handler) register(c echo.Context) error {
 	if err != nil {
 		return echoutil.HandleUnprocessableContent(c, validationErrors)
 	}
-	res, err := h.service.Register(ctx, req)
+	// TODO: currently the RegisterResponse does not include any data, so I skipped its value!
+	_, err = h.service.Register(ctx, req)
 	if err != nil {
 		return echoutil.HandleGenericError(c, err)
 	}
-	return c.JSON(http.StatusOK, envelope.New(true).WithData(res))
+	return c.JSON(http.StatusOK, envelope.New(true))
 }

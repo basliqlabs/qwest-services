@@ -2,15 +2,14 @@ package jwtutil
 
 import (
 	"errors"
-	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
 type JWTConfig struct {
-	ExpirationTime time.Duration `koanf:"expiration_time_ns"`
-	SecretKey      string        `koanf:"secret_key"`
+	AccessTokenExpirationTime time.Duration `koanf:"access_token_expiration_time_ns"`
+	SecretKey                 string        `koanf:"secret_key"`
 }
 
 type JWT struct {
@@ -24,12 +23,10 @@ func New(cfg JWTConfig) JWT {
 }
 
 func (j *JWT) Generate(username string, email string) (string, error) {
-	fmt.Println("j.config.ExpirationTime", j.config.ExpirationTime)
-	
 	claims := jwt.MapClaims{
 		"username": username,
 		"email":    email,
-		"exp":      time.Now().Add(j.config.ExpirationTime).Unix(),
+		"exp":      time.Now().Add(j.config.AccessTokenExpirationTime).Unix(),
 		"iat":      time.Now().Unix(),
 	}
 
