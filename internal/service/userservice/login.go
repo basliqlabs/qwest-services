@@ -2,8 +2,10 @@ package userservice
 
 import (
 	"context"
+	"time"
 
 	"github.com/basliqlabs/qwest-services/internal/dto/userdto"
+	"github.com/basliqlabs/qwest-services/internal/entity/tokenentity"
 	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/email"
@@ -60,7 +62,7 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 			WithMessage(translation.T(lang, "user_not_found"))
 	}
 
-	token, err := s.jwt.Generate(user.UserName, user.Email)
+	tokenPair, err := s.jwt.GenerateTokenPair(user.UserName, user.Email)
 	if err != nil {
 		return &userdto.LoginResponse{}, richerror.
 			New(op).
@@ -70,5 +72,32 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 			})
 	}
 
-	return &userdto.LoginResponse{Token: token}, nil
+	userEntity, found, err := s.repo.FindUserByUserName(ctx, user.UserName)
+	if err != nil || !found {
+		return &userdto.LoginResponse{}, richerror.
+			New(op).
+			WithKind(richerror.KindUnexpected).
+			WithError(err)
+	}
+
+	refreshToken := tokenentity.RefreshToken{
+		UserID:    userEntity.UserID,
+		Token:     tokenPair.RefreshToken,
+		ExpiresAt: time.Now().Add(s.authConfig.JWT.RefreshTokenExpirationTime),
+		CreatedAt: time.Now(),
+		Revoked:   false,
+	}
+
+	_, err = s.tokenRepo.Create(ctx, refreshToken)
+	if err != nil {
+		return &userdto.LoginResponse{}, richerror.
+			New(op).
+			WithKind(richerror.KindUnexpected).
+			WithError(err)
+	}
+
+	return &userdto.LoginResponse{
+		AccessToken:  tokenPair.AccessToken,
+		RefreshToken: tokenPair.RefreshToken,
+	}, nil
 }

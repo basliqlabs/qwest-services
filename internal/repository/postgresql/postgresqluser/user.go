@@ -50,7 +50,7 @@ func (d *DB) FindUserByMobile(ctx context.Context, mobile string) (userentity.Us
 	}
 
 	stmt, err := d.db.Conn().PrepareContext(ctx,
-		`SELECT username, email, password_hash FROM users WHERE mobile=$1`)
+		`SELECT user_id, username, email, password_hash FROM users WHERE mobile=$1`)
 
 	if err != nil {
 		return userentity.UserWithPasswordHash{}, false, richerror.New(op).
@@ -61,7 +61,7 @@ func (d *DB) FindUserByMobile(ctx context.Context, mobile string) (userentity.Us
 
 	row := stmt.QueryRowContext(ctx, normalizedMobile)
 	var user userentity.UserWithPasswordHash
-	err = row.Scan(&user.UserName, &user.Email, &user.PasswordHash)
+	err = row.Scan(&user.UserID, &user.UserName, &user.Email, &user.PasswordHash)
 	user.Mobile = normalizedMobile
 
 	if err != nil {
@@ -79,7 +79,7 @@ func (d *DB) FindUserByMobile(ctx context.Context, mobile string) (userentity.Us
 func (d *DB) FindUserByEmail(ctx context.Context, email string) (userentity.UserWithPasswordHash, bool, error) {
 	const op = "postgresqluser.FindUserByEmail"
 	stmt, err := d.db.Conn().PrepareContext(ctx,
-		`SELECT username, email, password_hash FROM users WHERE email=$1`)
+		`SELECT user_id, username, email, password_hash FROM users WHERE email=$1`)
 
 	if err != nil {
 		return userentity.UserWithPasswordHash{}, false, richerror.New(op).
@@ -91,7 +91,7 @@ func (d *DB) FindUserByEmail(ctx context.Context, email string) (userentity.User
 	row := stmt.QueryRowContext(ctx, email)
 
 	var user userentity.UserWithPasswordHash
-	err = row.Scan(&user.UserName, &user.Email, &user.PasswordHash)
+	err = row.Scan(&user.UserID, &user.UserName, &user.Email, &user.PasswordHash)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return userentity.UserWithPasswordHash{}, false, nil
@@ -107,7 +107,7 @@ func (d *DB) FindUserByEmail(ctx context.Context, email string) (userentity.User
 func (d *DB) FindUserByUserName(ctx context.Context, username string) (userentity.UserWithPasswordHash, bool, error) {
 	const op = "postgresqluser.FindUserByUserName"
 	stmt, err := d.db.Conn().PrepareContext(ctx,
-		`SELECT username, email, password_hash FROM users WHERE username=$1`)
+		`SELECT user_id, username, email, password_hash FROM users WHERE username=$1`)
 
 	if err != nil {
 		return userentity.UserWithPasswordHash{}, false, richerror.New(op).
@@ -119,7 +119,7 @@ func (d *DB) FindUserByUserName(ctx context.Context, username string) (userentit
 	row := stmt.QueryRowContext(ctx, username)
 
 	var user userentity.UserWithPasswordHash
-	err = row.Scan(&user.UserName, &user.Email, &user.PasswordHash)
+	err = row.Scan(&user.UserID, &user.UserName, &user.Email, &user.PasswordHash)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return userentity.UserWithPasswordHash{}, false, nil

@@ -11,8 +11,10 @@
 package main
 
 import (
+	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver/middleware"
 	"github.com/basliqlabs/qwest-services/internal/delivery/httpserver/userhandler"
 	"github.com/basliqlabs/qwest-services/internal/repository/postgresql"
+	"github.com/basliqlabs/qwest-services/internal/repository/postgresql/postgresqlrefreshtoken"
 	"github.com/basliqlabs/qwest-services/internal/repository/postgresql/postgresqluser"
 	"github.com/basliqlabs/qwest-services/internal/service/userservice"
 	"github.com/basliqlabs/qwest-services/internal/validator"
@@ -33,12 +35,14 @@ func main() {
 	mainRepo := postgresql.New(cfg.Repository.Postgres)
 	userRepo := postgresqluser.New(mainRepo)
 	jwt := jwtutil.New(cfg.Auth.JWT)
+	tokenRepo := postgresqlrefreshtoken.New(mainRepo)
 
-	userSvc := userservice.New(userRepo, jwt)
+	userSvc := userservice.New(userRepo, tokenRepo, jwt, cfg.Auth)
 
 	mainValidator := validator.New()
 	userValidator := uservalidator.New(mainValidator)
-	userHandler := userhandler.New(userValidator, userSvc)
+	authMiddleware := middleware.New(jwt, tokenRepo)
+	userHandler := userhandler.New(userValidator, userSvc, authMiddleware)
 
 	server := httpserver.New(httpserver.Args{
 		UserHandler: *userHandler,

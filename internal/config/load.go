@@ -36,14 +36,15 @@ func Load(configPath string) Config {
 	// highest precedence -> overwrite variables with what's inside .env file
 
 	err = k.Load(confmap.Provider(map[string]any{
-		"repository.postgres.username":             dotenv.Get("POSTGRES_USER"),
-		"repository.postgres.password":             dotenv.Get("POSTGRES_PASSWORD"),
-		"repository.postgres.host":                 dotenv.Get("POSTGRES_HOST"),
-		"repository.postgres.port":                 dotenv.Get("POSTGRES_PORT"),
-		"repository.postgres.dbname":               dotenv.Get("POSTGRES_DB"),
-		"env":                                      dotenv.Get("ENV"),
-		"auth.jwt.secret_key":                      dotenv.Get("JWT_SECRET_KEY"),
-		"auth.jwt.access_token_expiration_time_ns": time.Duration(dotenv.GetNumber("JWT_EXPIRATION_TIME_NS")),
+		"repository.postgres.username":              dotenv.Get("POSTGRES_USER"),
+		"repository.postgres.password":              dotenv.Get("POSTGRES_PASSWORD"),
+		"repository.postgres.host":                  dotenv.Get("POSTGRES_HOST"),
+		"repository.postgres.port":                  dotenv.Get("POSTGRES_PORT"),
+		"repository.postgres.dbname":                dotenv.Get("POSTGRES_DB"),
+		"env":                                       dotenv.Get("ENV"),
+		"auth.jwt.secret_key":                       dotenv.Get("JWT_SECRET_KEY"),
+		"auth.jwt.access_token_expiration_time_ns":  time.Duration(dotenv.GetNumber("JWT_ACCESS_TOKEN_EXPIRATION_TIME_NS")),
+		"auth.jwt.refresh_token_expiration_time_ns": time.Duration(dotenv.GetNumber("JWT_REFRESH_TOKEN_EXPIRATION_TIME_NS")),
 	}, "."), nil)
 
 	if err != nil {

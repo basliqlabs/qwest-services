@@ -3,6 +3,8 @@ package userservice
 import (
 	"context"
 
+	"github.com/basliqlabs/qwest-services/internal/config"
+	"github.com/basliqlabs/qwest-services/internal/entity/tokenentity"
 	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/jwtutil"
 )
@@ -15,14 +17,27 @@ type Repository interface {
 	CreateUser(ctx context.Context, user userentity.UserWithPasswordHash) (int, error)
 }
 
-type Service struct {
-	repo Repository
-	jwt  jwtutil.JWT
+type RefreshTokenRepository interface {
+	Create(ctx context.Context, token tokenentity.RefreshToken) (tokenentity.RefreshToken, error)
+	GetByToken(ctx context.Context, token string) (tokenentity.RefreshToken, error)
+	GetByUserEmail(ctx context.Context, email string) (tokenentity.RefreshToken, error)
+	DeleteByUserID(ctx context.Context, userID int) error
+	DeleteByToken(ctx context.Context, token string) error
+	RevokeByToken(ctx context.Context, token string) error
 }
 
-func New(repo Repository, jwt jwtutil.JWT) Service {
+type Service struct {
+	repo       Repository
+	tokenRepo  RefreshTokenRepository
+	jwt        jwtutil.JWT
+	authConfig config.AuthConfig
+}
+
+func New(repo Repository, tokenRepo RefreshTokenRepository, jwt jwtutil.JWT, authConfig config.AuthConfig) Service {
 	return Service{
-		repo: repo,
-		jwt:  jwt,
+		repo:       repo,
+		tokenRepo:  tokenRepo,
+		jwt:        jwt,
+		authConfig: authConfig,
 	}
 }

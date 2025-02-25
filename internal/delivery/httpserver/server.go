@@ -14,11 +14,13 @@ type Server struct {
 	cfg         config.Config
 	Router      *echo.Echo
 	userHandler userhandler.Handler
+	auth        middleware.AuthMiddleware
 }
 
 type Args struct {
 	Config      config.Config
 	UserHandler userhandler.Handler
+	Auth        middleware.AuthMiddleware
 }
 
 func New(args Args) *Server {
@@ -26,6 +28,7 @@ func New(args Args) *Server {
 		cfg:         args.Config,
 		Router:      echo.New(),
 		userHandler: args.UserHandler,
+		auth:        args.Auth,
 	}
 }
 
