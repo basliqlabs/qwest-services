@@ -29,12 +29,11 @@ func main() {
 	cfg := config.Load("config.yml")
 	logger.Init(cfg.Logger, cfg.Env)
 	translation.Init(cfg.Language)
+	jwtutil.Init(cfg.Auth.JWT)
 
 	mainRepo := postgresql.New(cfg.Repository.Postgres)
 	userRepo := postgresqluser.New(mainRepo)
-	jwt := jwtutil.New(cfg.Auth.JWT)
-
-	userSvc := userservice.New(userRepo, jwt)
+	userSvc := userservice.New(userRepo)
 
 	mainValidator := validator.New()
 	userValidator := uservalidator.New(mainValidator)

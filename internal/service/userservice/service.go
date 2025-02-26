@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
-	"github.com/basliqlabs/qwest-services/pkg/jwtutil"
 )
 
 type Repository interface {
@@ -18,12 +17,10 @@ type Repository interface {
 
 type Service struct {
 	repo Repository
-	jwt  jwtutil.JWT
 }
 
-func New(repo Repository, jwt jwtutil.JWT) Service {
+func New(repo Repository) Service {
 	return Service{
 		repo: repo,
-		jwt:  jwt,
 	}
 }
