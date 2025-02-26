@@ -38,7 +38,6 @@ func (s *Service) Register(ctx context.Context, req *userdto.RegisterRequest) (*
 		User: userentity.User{
 			Email:    req.Email,
 			UserName: username.GenerateUnique(usernameBase),
-			Mobile:   "",
 		},
 		PasswordHash: hashedPassword,
 	}

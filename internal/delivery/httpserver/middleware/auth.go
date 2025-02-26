@@ -6,20 +6,20 @@ import (
 	"time"
 
 	"github.com/basliqlabs/qwest-services/internal/dto/userdto"
-	"github.com/basliqlabs/qwest-services/internal/service/userservice"
+	"github.com/basliqlabs/qwest-services/internal/service/tokenservice"
+	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/envelope"
 	"github.com/basliqlabs/qwest-services/pkg/jwtutil"
+	"github.com/basliqlabs/qwest-services/pkg/translation"
 	"github.com/labstack/echo/v4"
 )
 
 type AuthMiddleware struct {
-	jwt       jwtutil.JWT
-	tokenRepo userservice.RefreshTokenRepository
+	tokenRepo tokenservice.Repository
 }
 
-func New(jwt jwtutil.JWT, tokenRepo userservice.RefreshTokenRepository) AuthMiddleware {
+func NewAuthMiddleware(tokenRepo tokenservice.Repository) AuthMiddleware {
 	return AuthMiddleware{
-		jwt:       jwt,
 		tokenRepo: tokenRepo,
 	}
 }
@@ -28,29 +28,65 @@ func New(jwt jwtutil.JWT, tokenRepo userservice.RefreshTokenRepository) AuthMidd
 func (m *AuthMiddleware) StrictAuth() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
-			// Get token from header
 			authHeader := c.Request().Header.Get("Authorization")
+			lang := contextutil.GetLanguage(c.Request().Context())
 			if authHeader == "" {
-				return echo.ErrUnauthorized
+				return c.JSON(
+					http.StatusUnauthorized,
+					envelope.New(false).
+						WithError(
+							&envelope.ResponseError{
+								Code:    envelope.ErrUnauthorized,
+								Message: translation.T(lang, "unauthorized"),
+							},
+						),
+				)
 			}
 
 			// Extract token from "Bearer <token>"
 			parts := strings.Split(authHeader, " ")
 			if len(parts) != 2 || parts[0] != "Bearer" {
-				return echo.ErrUnauthorized
+				return c.JSON(
+					http.StatusUnauthorized,
+					envelope.New(false).
+						WithError(
+							&envelope.ResponseError{
+								Code:    envelope.ErrUnauthorized,
+								Message: translation.T(lang, "invalid_access_token"),
+							},
+						),
+				)
 			}
 			tokenString := parts[1]
 
 			// Validate token
-			claims, err := m.jwt.Decode(tokenString)
+			claims, err := jwtutil.Decode(tokenString)
 			if err != nil {
-				return echo.ErrUnauthorized
+				return c.JSON(
+					http.StatusUnauthorized,
+					envelope.New(false).
+						WithError(
+							&envelope.ResponseError{
+								Code:    envelope.ErrUnauthorized,
+								Message: translation.T(lang, "invalid_token_claims"),
+							},
+						),
+				)
 			}
 
 			// Check if token is revoked
 			refreshToken, err := m.tokenRepo.GetByToken(c.Request().Context(), tokenString)
 			if err == nil && refreshToken.Revoked {
-				return echo.ErrUnauthorized
+				return c.JSON(
+					http.StatusUnauthorized,
+					envelope.New(false).
+						WithError(
+							&envelope.ResponseError{
+								Code:    envelope.ErrUnauthorized,
+								Message: translation.T(lang, "token_has_been_revoked"),
+							},
+						),
+				)
 			}
 
 			// Add user info to context
@@ -78,7 +114,7 @@ func (m *AuthMiddleware) OptionalAuth() echo.MiddlewareFunc {
 				parts := strings.Split(authHeader, " ")
 				if len(parts) == 2 && parts[0] == "Bearer" {
 					tokenString := parts[1]
-					claims, err := m.jwt.Decode(tokenString)
+					claims, err := jwtutil.Decode(tokenString)
 					if err == nil {
 						if exp, ok := claims["exp"].(float64); ok {
 							if time.Unix(int64(exp), 0).After(time.Now()) {
@@ -98,7 +134,6 @@ func (m *AuthMiddleware) OptionalAuth() echo.MiddlewareFunc {
 				}
 			}
 
-			// If no valid token found, proceed to the handler
 			return next(c)
 		}
 	}

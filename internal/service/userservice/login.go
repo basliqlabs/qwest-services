@@ -9,6 +9,7 @@ import (
 	"github.com/basliqlabs/qwest-services/internal/entity/userentity"
 	"github.com/basliqlabs/qwest-services/pkg/contextutil"
 	"github.com/basliqlabs/qwest-services/pkg/email"
+	"github.com/basliqlabs/qwest-services/pkg/jwtutil"
 	"github.com/basliqlabs/qwest-services/pkg/mobile"
 	"github.com/basliqlabs/qwest-services/pkg/passwordhash"
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
@@ -26,7 +27,6 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 		err   error = nil
 	)
 
-	// TODO - check for validation errors
 	if valid, _ := email.IsValid(req.Identifier); valid {
 		user, found, err = s.repo.FindUserByEmail(ctx, req.Identifier)
 	} else if valid, _ := username.IsValid(req.Identifier); valid {
@@ -36,11 +36,11 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 	}
 
 	if err != nil {
-		return &userdto.LoginResponse{}, richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
+		return nil, richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
 	}
 
 	if !found {
-		return &userdto.LoginResponse{}, richerror.
+		return nil, richerror.
 			New(op).
 			WithKind(richerror.KindNotFound).
 			WithMessage(translation.T(lang, "user_not_found"))
@@ -49,22 +49,22 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 	areIdentical, err := passwordhash.Compare(user.PasswordHash, req.Password)
 
 	if err != nil {
-		return &userdto.LoginResponse{}, richerror.
-			New(op).
-			WithKind(richerror.KindUnexpected).
-			WithError(err)
-	}
-
-	if !areIdentical {
-		return &userdto.LoginResponse{}, richerror.
+		return nil, richerror.
 			New(op).
 			WithKind(richerror.KindNotFound).
 			WithMessage(translation.T(lang, "user_not_found"))
 	}
 
-	tokenPair, err := s.jwt.GenerateTokenPair(user.UserName, user.Email)
+	if !areIdentical {
+		return nil, richerror.
+			New(op).
+			WithKind(richerror.KindNotFound).
+			WithMessage(translation.T(lang, "user_not_found"))
+	}
+
+	tokenPair, err := jwtutil.GenerateTokenPair(user.UserName, user.Email)
 	if err != nil {
-		return &userdto.LoginResponse{}, richerror.
+		return nil, richerror.
 			New(op).
 			WithKind(richerror.KindUnexpected).
 			WithMeta(map[string]any{
@@ -72,23 +72,15 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 			})
 	}
 
-	userEntity, found, err := s.repo.FindUserByUserName(ctx, user.UserName)
-	if err != nil || !found {
-		return &userdto.LoginResponse{}, richerror.
-			New(op).
-			WithKind(richerror.KindUnexpected).
-			WithError(err)
-	}
-
 	refreshToken := tokenentity.RefreshToken{
-		UserID:    userEntity.UserID,
+		UserID:    user.UserID,
 		Token:     tokenPair.RefreshToken,
 		ExpiresAt: time.Now().Add(s.authConfig.JWT.RefreshTokenExpirationTime),
 		CreatedAt: time.Now(),
 		Revoked:   false,
 	}
 
-	_, err = s.tokenRepo.Create(ctx, refreshToken)
+	err = s.tokenRepo.Create(ctx, refreshToken)
 	if err != nil {
 		return &userdto.LoginResponse{}, richerror.
 			New(op).

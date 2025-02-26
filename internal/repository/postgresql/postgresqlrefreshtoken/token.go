@@ -4,55 +4,40 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+
 	"github.com/basliqlabs/qwest-services/internal/entity/tokenentity"
-	"github.com/basliqlabs/qwest-services/internal/repository/postgresql"
 	"github.com/basliqlabs/qwest-services/pkg/richerror"
 )
 
-type Repository struct {
-	db *postgresql.DB
-}
-
-func New(db *postgresql.DB) *Repository {
-	return &Repository{
-		db: db,
-	}
-}
-
-// Create stores a new refresh token
-func (r *Repository) Create(ctx context.Context, token tokenentity.RefreshToken) (tokenentity.RefreshToken, error) {
+func (r *Repository) Create(ctx context.Context, token tokenentity.RefreshToken) error {
 	const op = "postgresqlrefreshtoken.Create"
 
 	query := `
 		INSERT INTO refresh_tokens (user_id, token, expires_at, created_at, revoked)
 		VALUES ($1, $2, $3, $4, $5)
-		RETURNING id
 	`
 
 	stmt, err := r.db.Conn().PrepareContext(ctx, query)
 	if err != nil {
-		return tokenentity.RefreshToken{}, richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
+		return richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
 	}
 	defer stmt.Close()
 
-	var id int
-	err = stmt.QueryRowContext(ctx,
+	_, err = stmt.ExecContext(ctx,
 		token.UserID,
 		token.Token,
 		token.ExpiresAt,
 		token.CreatedAt,
 		token.Revoked,
-	).Scan(&id)
+	)
 
 	if err != nil {
-		return tokenentity.RefreshToken{}, richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
+		return richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
 	}
 
-	token.ID = id
-	return token, nil
+	return nil
 }
 
-// GetByToken retrieves a refresh token by its value
 func (r *Repository) GetByToken(ctx context.Context, token string) (tokenentity.RefreshToken, error) {
 	const op = "postgresqlrefreshtoken.GetByToken"
 
@@ -88,7 +73,6 @@ func (r *Repository) GetByToken(ctx context.Context, token string) (tokenentity.
 	return refreshToken, nil
 }
 
-// DeleteByUserID removes all refresh tokens for a user
 func (r *Repository) DeleteByUserID(ctx context.Context, userID int) error {
 	const op = "postgresqlrefreshtoken.DeleteByUserID"
 
@@ -111,7 +95,6 @@ func (r *Repository) DeleteByUserID(ctx context.Context, userID int) error {
 	return nil
 }
 
-// DeleteByToken removes a specific refresh token
 func (r *Repository) DeleteByToken(ctx context.Context, token string) error {
 	const op = "postgresqlrefreshtoken.DeleteByToken"
 
@@ -143,7 +126,6 @@ func (r *Repository) DeleteByToken(ctx context.Context, token string) error {
 	return nil
 }
 
-// RevokeByToken marks a refresh token as revoked
 func (r *Repository) RevokeByToken(ctx context.Context, token string) error {
 	const op = "postgresqlrefreshtoken.RevokeByToken"
 
@@ -182,7 +164,7 @@ func (r *Repository) GetByUserEmail(ctx context.Context, email string) (tokenent
 	query := `
 		SELECT id, user_id, token, expires_at, created_at, revoked
 		FROM refresh_tokens
-		WHERE user_id = (SELECT user_id FROM users WHERE email = $1)
+		WHERE user_id = (SELECT user_id FROM users WHERE email = $1) AND revoked = false
 		ORDER BY created_at DESC
 		LIMIT 1
 	`

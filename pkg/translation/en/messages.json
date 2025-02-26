@@ -5,6 +5,8 @@
   "internal_server": "Internal server error.",
   "user_not_found": "No user matching the provided identifier and password was found.",
   "user_already_exists": "User already exists.",
+  "unauthorized": "Unauthorized.",
+  "invalid_access_token": "Please make sure you are logged in.",
   "token_has_been_revoked": "Your session is no longer valid. Please sign in again.",
   "token_has_expired": "Your session has expired. Please sign in again to continue.",
   "invalid_token_claims": "There was a problem with your session. Please sign in again."

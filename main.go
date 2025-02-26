@@ -16,6 +16,7 @@ import (
 	"github.com/basliqlabs/qwest-services/internal/repository/postgresql"
 	"github.com/basliqlabs/qwest-services/internal/repository/postgresql/postgresqlrefreshtoken"
 	"github.com/basliqlabs/qwest-services/internal/repository/postgresql/postgresqluser"
+	"github.com/basliqlabs/qwest-services/internal/service/tokenservice"
 	"github.com/basliqlabs/qwest-services/internal/service/userservice"
 	"github.com/basliqlabs/qwest-services/internal/validator"
 	"github.com/basliqlabs/qwest-services/internal/validator/uservalidator"
@@ -31,18 +32,18 @@ func main() {
 	cfg := config.Load("config.yml")
 	logger.Init(cfg.Logger, cfg.Env)
 	translation.Init(cfg.Language)
+	jwtutil.Init(cfg.Auth.JWT)
 
 	mainRepo := postgresql.New(cfg.Repository.Postgres)
 	userRepo := postgresqluser.New(mainRepo)
-	jwt := jwtutil.New(cfg.Auth.JWT)
 	tokenRepo := postgresqlrefreshtoken.New(mainRepo)
-
-	userSvc := userservice.New(userRepo, tokenRepo, jwt, cfg.Auth)
-
+	userSvc := userservice.New(userRepo, tokenRepo, cfg.Auth)
+	tokenSvc := tokenservice.New(tokenRepo, cfg.Auth)
+	
 	mainValidator := validator.New()
 	userValidator := uservalidator.New(mainValidator)
-	authMiddleware := middleware.New(jwt, tokenRepo)
-	userHandler := userhandler.New(userValidator, userSvc, authMiddleware)
+	authMiddleware := middleware.NewAuthMiddleware(tokenRepo)
+	userHandler := userhandler.New(userValidator, userSvc, tokenSvc, authMiddleware)
 
 	server := httpserver.New(httpserver.Args{
 		UserHandler: *userHandler,
