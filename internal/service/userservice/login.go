@@ -25,7 +25,6 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 		err   error = nil
 	)
 
-	// TODO - check for validation errors
 	if valid, _ := email.IsValid(req.Identifier); valid {
 		user, found, err = s.repo.FindUserByEmail(ctx, req.Identifier)
 	} else if valid, _ := username.IsValid(req.Identifier); valid {
@@ -35,11 +34,11 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 	}
 
 	if err != nil {
-		return &userdto.LoginResponse{}, richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
+		return nil, richerror.New(op).WithError(err).WithKind(richerror.KindUnexpected)
 	}
 
 	if !found {
-		return &userdto.LoginResponse{}, richerror.
+		return nil, richerror.
 			New(op).
 			WithKind(richerror.KindNotFound).
 			WithMessage(translation.T(lang, "user_not_found"))
@@ -48,23 +47,22 @@ func (s *Service) Login(ctx context.Context, req *userdto.LoginRequest) (*userdt
 	areIdentical, err := passwordhash.Compare(user.PasswordHash, req.Password)
 
 	if err != nil {
-		return &userdto.LoginResponse{}, richerror.
+		return nil, richerror.
 			New(op).
-			WithKind(richerror.KindUnexpected).
-			WithError(err)
+			WithError(err).
+			WithKind(richerror.KindUnexpected)
 	}
 
 	if !areIdentical {
-		return &userdto.LoginResponse{}, richerror.
+		return nil, richerror.
 			New(op).
 			WithKind(richerror.KindNotFound).
 			WithMessage(translation.T(lang, "user_not_found"))
 	}
 
-	// TODO - fix JWT
-	token, err := jwtutil.Generate(user.UserName)
+	token, err := jwtutil.Generate(user.UserName, user.Email)
 	if err != nil {
-		return &userdto.LoginResponse{}, richerror.
+		return nil, richerror.
 			New(op).
 			WithKind(richerror.KindUnexpected).
 			WithMeta(map[string]any{

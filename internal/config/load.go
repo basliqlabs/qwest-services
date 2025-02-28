@@ -1,6 +1,8 @@
 package config
 
 import (
+	"time"
+
 	"github.com/knadh/koanf/parsers/yaml"
 	"github.com/knadh/koanf/providers/confmap"
 	"github.com/knadh/koanf/providers/file"
@@ -32,17 +34,28 @@ func Load(configPath string) Config {
 	}
 
 	// highest precedence -> overwrite variables with what's inside .env file
+
 	err = k.Load(confmap.Provider(map[string]any{
-		"repository.postgres.username": dotenv.Get("POSTGRES_USER"),
-		"repository.postgres.password": dotenv.Get("POSTGRES_PASSWORD"),
-		"repository.postgres.host":     dotenv.Get("POSTGRES_HOST"),
-		"repository.postgres.port":     dotenv.Get("POSTGRES_PORT"),
-		"repository.postgres.dbname":   dotenv.Get("POSTGRES_DB"),
-		"env":                          dotenv.Get("ENV"),
+		"repository.postgres.username":             dotenv.Get("POSTGRES_USER"),
+		"repository.postgres.password":             dotenv.Get("POSTGRES_PASSWORD"),
+		"repository.postgres.host":                 dotenv.Get("POSTGRES_HOST"),
+		"repository.postgres.port":                 dotenv.Get("POSTGRES_PORT"),
+		"repository.postgres.dbname":               dotenv.Get("POSTGRES_DB"),
+		"env":                                      dotenv.Get("ENV"),
+		"auth.jwt.secret_key":                      dotenv.Get("JWT_SECRET_KEY"),
+		"auth.jwt.access_token_expiration_time_ns": time.Duration(dotenv.GetNumber("JWT_EXPIRATION_TIME_NS")),
 	}, "."), nil)
+
+	if err != nil {
+		panic("failed to load the env config")
+	}
 
 	// deserialize all the loaded data into the config variable
 	err = k.Unmarshal("", &cfg)
+
+	if err != nil {
+		panic("failed to unmarshal the config")
+	}
 
 	return cfg
 }

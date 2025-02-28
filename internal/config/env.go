@@ -54,8 +54,8 @@ func (e *EnvironmentVariables) Get(key string) string {
 }
 
 func (e *EnvironmentVariables) GetNumber(key string) int {
-	value, ok := e.envMap[key]
-
+	envKey := fmt.Sprintf("%s%s", e.prefix, key)
+	value, ok := e.envMap[envKey]
 	if !ok {
 		panic(fmt.Sprintf(`failed to get the value of "%v"`, key))
 	}
